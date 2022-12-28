@@ -1,26 +1,26 @@
 const express = require('express');
-const tourController = require('../controllers/shipmentController');
+const shipmentController = require('../controllers/shipmentController');
 
 const router = express.Router();
 
-// router.param('id', tourController.checkID);
+// router.param('id', shipmentController.checkID);
 
 router
   .route('/top-5-shipments')
-  .get(tourController.aliasTopShipments, tourController.getAllShipments);
+  .get(shipmentController.aliasTopShipments, shipmentController.getAllShipments);
 
-router.route('/shipment-stats').get(tourController.getShipmentStats);
-router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
+router.route('/shipment-stats').get(shipmentController.getShipmentStats);
+router.route('/monthly-plan/:year').get(shipmentController.getMonthlyPlan);
 
 router
   .route('/')
-  .get(tourController.getAllShipments)
-  .post(tourController.createShipment);
+  .get(shipmentController.getAllShipments)
+  .post(shipmentController.createShipment);
 
 router
   .route('/:id')
-  .get(tourController.getShipment)
-  .patch(tourController.updateShipment)
-  .delete(tourController.deleteShipment);
+  .get(shipmentController.getShipment)
+  .patch(shipmentController.updateShipment)
+  .delete(shipmentController.deleteShipment);
 
 module.exports = router;

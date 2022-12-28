@@ -36,6 +36,7 @@ const shipmentSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  comment2: String,
 });
 
 shipmentSchema.virtual('durationWeeks').get(function() {
