@@ -1,7 +1,7 @@
 {
-  "name": "natours",
+  "name": "MubeaTrack",
   "version": "1.0.0",
-  "description": "Learning node, express and mongoDB",
+  "description": "Shipment tracking for Mubea",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "start:prod": "SET NODE_ENV=development&&nodemon server.js",
     "debug": "ndb server.js"
   },
-  "author": "Cla Tschenett",
+  "author": "John Schmid, Cla Tschenett",
   "license": "ISC",
   "dependencies": {
     "airbnb": "^0.0.2",
