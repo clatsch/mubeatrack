@@ -40,8 +40,8 @@ exports.login = catchAsync(async(req, res, next) => {
     return next(new AppError('Please provide email and password!', 400));
   }
 
-  // 2) Check if user exists && pasword is correct
-  // +password because in the model, passwort is to select: false
+  // 2) Check if user exists && password is correct
+  // +password because in the model, password is to select: false
   const user = await User.findOne({ email })
     .select('+password');
 
