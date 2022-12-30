@@ -1,5 +1,6 @@
 const express = require('express');
 const shipmentController = require('../controllers/shipmentController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.route('/monthly-plan/:year').get(shipmentController.getMonthlyPlan);
 
 router
   .route('/')
-  .get(shipmentController.getAllShipments)
+  .get(authController.protect, shipmentController.getAllShipments)
   .post(shipmentController.createShipment);
 
 router
