@@ -3,6 +3,12 @@ const mongoose = require('mongoose');
 //const validator = require('validator');
 
 const shipmentSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: [10, 'A shipment name must have more or equal then 10 characters'],
+  },
   shipmentDate: {
     type: Date,
     required: [true, 'A shipment must have a date'],
@@ -56,7 +62,7 @@ shipmentSchema.pre('save', function(next) {
 // because like this, it finds everything that starts with find,
 // hence also findOne which is findById in the background
 shipmentSchema.pre(/^find/, function(next) {
-  this.find({ secretTour: { $ne: true } });
+  this.find({ secretShipment: { $ne: true } });
 
   this.start = Date.now();
   next();
@@ -70,7 +76,7 @@ shipmentSchema.post(/^find/, function(docs, next) {
 
 // AGGREGATION MIDDLEWARE
 shipmentSchema.pre('aggregate', function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  this.pipeline().unshift({ $match: { secretShipment: { $ne: true } } });
   next();
 });
 

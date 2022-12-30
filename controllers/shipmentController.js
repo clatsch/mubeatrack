@@ -1,5 +1,7 @@
 const Shipment = require('../models/shipmentModel');
 const APIFeatures = require('../utils/apiFeatures');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 exports.aliasTopShipments = (req, res, next) => {
   req.query.limit = '5';
@@ -8,188 +10,159 @@ exports.aliasTopShipments = (req, res, next) => {
   next();
 };
 
-exports.getAllShipments = async(req, res) => {
-  try {
-    // EXECUTE QUERY
-    const features = new APIFeatures(Shipment.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const shipments = await features.query;
+exports.getAllShipments = catchAsync(async(req, res, next) => {
+  const features = new APIFeatures(Shipment.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const shipments = await features.query;
 
-    // SEND RESPONSE
-    res.status(200).json({
+  // SEND RESPONSE
+  res.status(200)
+    .json({
       status: 'success',
       results: shipments.length,
       data: {
         shipments: shipments,
       },
     });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
+});
+
+exports.getShipment = catchAsync(async(req, res, next) => {
+  const shipment = await Shipment.findById(req.params.id);
+
+  if (!shipment) {
+    return next(new AppError('No shipment found with that ID', 404));
   }
-};
 
-exports.getShipment = async(req, res) => {
-  try {
-    const tour = await Shipment.findById(req.params.id);
-
-    res.status(200).json({
+  res.status(200)
+    .json({
       status: 'success',
       data: {
-        tour,
+        shipment,
       },
     });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+});
 
-exports.createShipment = async(req, res) => {
-  try {
-    const newShipment = await Shipment.create(req.body);
+exports.createShipment = catchAsync(async(req, res, next) => {
+  const newShipment = await Shipment.create(req.body);
 
-    res.status(201).json({
+  res.status(201)
+    .json({
       status: 'success',
       data: {
         shipment: newShipment,
       },
     });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+});
 
-exports.updateShipment = async(req, res) => {
-  try {
-    const shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json({
+exports.updateShipment = catchAsync(async(req, res, next) => {
+  const shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!shipment) {
+    return next(new AppError('No shipment found with that ID', 404));
+  }
+
+  res.status(200)
+    .json({
       status: 'success',
       data: {
-        shipment: shipment,
+        shipment,
       },
     });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+});
 
-exports.deleteShipment = async(req, res) => {
-  try {
-    await Shipment.findByIdAndDelete(req.params.id);
-    res.status(204).json({
+exports.deleteShipment = catchAsync(async(req, res, next) => {
+  const shipment = await Shipment.findByIdAndDelete(req.params.id);
+
+  if (!shipment) {
+    return next(new AppError('No shipment found with that ID', 404));
+  }
+
+  res.status(204)
+    .json({
       data: null,
       status: 'success',
     });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+});
 
-exports.getShipmentStats = async(req, res) => {
-  try {
-    const stats = await Shipment.aggregate([
-      {
-        $match: { ratingsAverage: { $gte: 4.0 } },
+exports.getShipmentStats = catchAsync(async(req, res, next) => {
+  const stats = await Shipment.aggregate([
+    {
+      $match: { ratingsAverage: { $gte: 4.0 } },
+    },
+    {
+      $group: {
+        // _id: null,
+        _id: { $toUpper: '$difficulty' },
+        //_id: '$difficulty',
+        // _id: '$ratingsAverage',
+        numShipments: { $sum: 1 },
+        numRatings: { $sum: '$ratingsQuantity' },
+        averageRating: { $avg: '$ratingsAverage' },
+        avgPrice: { $avg: '$price' },
+        minPrice: { $min: '$price' },
+        maxPrice: { $max: '$price' },
       },
-      {
-        $group: {
-          // _id: null,
-          _id: { $toUpper: '$difficulty' },
-          //_id: '$difficulty',
-          // _id: '$ratingsAverage',
-          numTours: { $sum: 1 },
-          numRatings: { $sum: '$ratingsQuantity' },
-          averageRating: { $avg: '$ratingsAverage' },
-          avgPrice: { $avg: '$price' },
-          minPrice: { $min: '$price' },
-          maxPrice: { $max: '$price' },
-        },
-      },
-      {
-        $sort: { avgPrice: 1 },
-      },
-    ]);
+    },
+    {
+      $sort: { avgPrice: 1 },
+    },
+  ]);
 
-    res.status(200).json({
+  res.status(200)
+    .json({
       status: 'success',
       data: {
         stats,
       },
     });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+});
 
-exports.getMonthlyPlan = async(req, res) => {
-  try {
-    const year = req.params.year * 1;
+exports.getMonthlyPlan = catchAsync(async(req, res, next) => {
+  const year = req.params.year * 1;
 
-    const plan = await Shipment.aggregate([
-      {
-        $unwind: '$startDates',
-      },
-      {
-        $match: {
-          startDates: {
-            $gte: new Date(`${year}-01-01`),
-            $lte: new Date(`${year}-12-31`),
-          },
+  const plan = await Shipment.aggregate([
+    {
+      $unwind: '$startDates',
+    },
+    {
+      $match: {
+        startDates: {
+          $gte: new Date(`${year}-01-01`),
+          $lte: new Date(`${year}-12-31`),
         },
       },
-      {
-        $group: {
-          _id: { $month: '$startDates' },
-          numTourStarts: { $sum: 1 },
-          tours: { $push: '$name' },
-        },
+    },
+    {
+      $group: {
+        _id: { $month: '$startDates' },
+        numShipmentStarts: { $sum: 1 },
+        shipments: { $push: '$name' },
       },
-      {
-        $addFields: { month: '$_id' },
+    },
+    {
+      $addFields: { month: '$_id' },
+    },
+    {
+      $project: {
+        _id: 0,
       },
-      {
-        $project: {
-          _id: 0,
-        },
-      },
-      {
-        $sort: { month: 1 },
-      },
-    ]);
+    },
+    {
+      $sort: { month: 1 },
+    },
+  ]);
 
-    res.status(200).json({
+  res.status(200)
+    .json({
       status: 'success',
       data: {
         plan,
       },
     });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+});

@@ -15,6 +15,7 @@
     "consistent-return": "off",
     "func-names": "off",
     "quotes": ["error", "single"],
+    "arrow-parens": ["error", "as-needed"],
     "comma-dangle": ["error", "always-multiline"],
     "object-shorthand": "off",
     "no-process-exit": "off",
