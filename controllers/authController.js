@@ -76,6 +76,7 @@ exports.protect = catchAsync(async(req, res, next) => {
   if (!currentUser) {
     return next(new AppError('The user belonging to this token does no longer exist', 401));
   }
+
   // 4) Check if user changed passwords after the token (JWT) was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(new AppError('User recently changed password! Please log in again.', 401));
@@ -85,3 +86,12 @@ exports.protect = catchAsync(async(req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+exports.restrictsTo = (...roles) => (req, res, next) => {
+  // roles ['admin', 'editor']. role='user'
+  if (!roles.includes(req.user.role)) {
+    return next(new AppError('You do not have permission to perform this action', 403));
+  }
+
+  next();
+};

@@ -10,8 +10,10 @@ router
   .route('/top-5-shipments')
   .get(shipmentController.aliasTopShipments, shipmentController.getAllShipments);
 
-router.route('/shipment-stats').get(shipmentController.getShipmentStats);
-router.route('/monthly-plan/:year').get(shipmentController.getMonthlyPlan);
+router.route('/shipment-stats')
+  .get(shipmentController.getShipmentStats);
+router.route('/monthly-plan/:year')
+  .get(shipmentController.getMonthlyPlan);
 
 router
   .route('/')
@@ -22,6 +24,6 @@ router
   .route('/:id')
   .get(shipmentController.getShipment)
   .patch(shipmentController.updateShipment)
-  .delete(shipmentController.deleteShipment);
+  .delete(authController.protect, authController.restrictsTo('admin', 'editor'), shipmentController.deleteShipment);
 
 module.exports = router;
