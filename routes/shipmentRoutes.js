@@ -17,8 +17,8 @@ router.route('/monthly-plan/:year')
 
 router
   .route('/')
-  .get(authController.protect, shipmentController.getAllShipments)
-  .post(shipmentController.createShipment);
+  .get(shipmentController.getAllShipments)
+  .post(authController.protect, shipmentController.createShipment);
 
 router
   .route('/:id')

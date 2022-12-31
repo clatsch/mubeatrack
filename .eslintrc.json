@@ -1,9 +1,10 @@
 {
   "extends": [
-    "airbnb",
     "plugin:node/recommended"
   ],
-
+  "plugins": [
+    "pug"
+  ],
   "rules": {
     "space-before-function-paren": ["error", {
       "anonymous": "never",
