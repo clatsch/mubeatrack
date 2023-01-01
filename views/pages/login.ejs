@@ -1,28 +1,7 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" type="image/background.png" href="img/favicon.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300i,700">
-    <title>MubeaTrack | <%=title%></title>
-</head>
-<header class="header">
-    <nav class="nav nav--tours"><a class="nav__el" href="#">All Shipments</a></nav>
-    <div class="header__logo"><img src="img/logo-color.png" alt="MubeaTrack logo" /></div>
-    <% if (locals.user) { %>
-    <a class="nav__el nav__el--logout" href="#">Log out</a>
-    <a class="nav__el" href="#"><img class="nav__user-img" src="img/users/<%=user.photo%>" alt="Photo of <%=user.name%>" /><span><%=user.name.split(' ')[0]%></span></a>
-
-    <% } else{ %>
-    <nav class="nav nav--user"><a class="nav__el" href="#">Log in</a><a class="nav__el nav__el--cta" href="#">Sign up</a>
-        <% } %>
-</header>
+<%- include('_header') -%>
 
 <body>
-    <main class="main">
+    <main class="main main--login">
         <div class="login-form">
             <h2 class="heading-secondary ma-bt-lg">Log into your account</h2>
             <form class="form">

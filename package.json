@@ -2,12 +2,15 @@
   "name": "MubeaTrack",
   "version": "1.0.0",
   "description": "Shipment tracking for Mubea",
-  "main": "app.js",
+  "source": "public/js/index.js",
+  "main": "public/js/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "watch:js": "parcel watch ./public/js/index.js --dist-dir ./public/js",
+    "build:js": "parcel watch ./public/js/index.js --dist-dir ./public/js"
   },
   "author": "John Schmidt, Cla Tschenett",
   "license": "ISC",
@@ -32,7 +35,8 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "eslint": "^8.30.0"
+    "eslint": "^8.30.0",
+    "parcel": "^2.8.2"
   },
   "engines": {
     "node": "^10"
