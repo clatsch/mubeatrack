@@ -3,3 +3,4 @@ node_modules/
 *.env
 .idea
 dev-data
+views/legacy
