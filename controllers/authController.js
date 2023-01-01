@@ -15,10 +15,10 @@ const createSendToken = (user, statusCode, res) => {
   const cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true,
-  }
-  if(process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
-  res.cookie('jwt', token, cookieOptions)
+  res.cookie('jwt', token, cookieOptions);
 
   // Remove password from output
   user.password = undefined;
@@ -31,7 +31,7 @@ const createSendToken = (user, statusCode, res) => {
         user,
       },
     });
-}
+};
 
 exports.signup = catchAsync(async(req, res, next) => {
   const newUser = await User.create({
@@ -73,7 +73,10 @@ exports.protect = catchAsync(async(req, res, next) => {
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
+
   if (!token) {
     return next(new AppError('You are not logged in! Please log in to get access.', 401));
   }
@@ -94,6 +97,30 @@ exports.protect = catchAsync(async(req, res, next) => {
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
+  next();
+});
+
+// Only for rendered pages, no errors!
+exports.isLoggedIn = catchAsync(async(req, res, next) => {
+  if (req.cookies.jwt) {
+    // 1) Verifying token
+    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+
+    // 2) Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      return next();
+    }
+
+    // 3) Check if user changed passwords after the token (JWT) was issued
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    // THERE IS A LOGGED IN USER
+    res.locals.user = currentUser;
+    return next();
+  }
   next();
 });
 
@@ -170,11 +197,12 @@ exports.resetPassword = catchAsync(async(req, res, next) => {
 });
 exports.updatePassword = catchAsync(async(req, res, next) => {
   // 1) Get user from collection
-  const user = await User.findById(req.user.id).select('+password');
+  const user = await User.findById(req.user.id)
+    .select('+password');
 
   // 2) Check if POSTed current password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    return next(new AppError('Your current password is wrong.', 401))
+    return next(new AppError('Your current password is wrong.', 401));
   }
 
   // 3) If so, update password

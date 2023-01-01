@@ -1,0 +1,22 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Tons</th>
+        </tr>
+        <br>
+        <% for(var i=0; i < shipments.length; i++) { %>
+            <tr>
+                <!--<td><%= i+1 %></td>-->
+                <td><%= shipments[i].shipmentDate; %></td>
+                <td><%= shipments[i].client %></td>
+                <td><%= shipments[i].amount %></td>
+            </tr>
+        <% } %>
+    </table>
+</main>
+
+<%- include('_footer') -%>
