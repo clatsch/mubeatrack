@@ -36,4 +36,15 @@ exports.getLoginForm = (req, res) => {
     });
 };
 
+exports.getAccount = (req, res) => {
+  res.status(200)
+    .set(
+      'Content-Security-Policy',
+      // eslint-disable-next-line quotes
+      'connect-src \'self\' https://cdnjs.cloudflare.com')
+    .render('account', {
+      title: 'Your account',
+    });
+}
+
 

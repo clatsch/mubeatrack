@@ -4,10 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.use(authController.isLoggedIn);
-
-router.get('/', viewsController.getLoginForm)
-router.get('/overview', viewsController.getOverview );
-router.get('/shipment', viewsController.getShipment);
+// isLoggedIn in unprotected routes, if globally, query of isLoggedIn and protect would both run
+router.get('/', authController.isLoggedIn, viewsController.getLoginForm)
+router.get('/overview', authController.protect, viewsController.getOverview );
+router.get('/shipment', authController.protect, viewsController.getShipment);
+router.get('/me', authController.protect, viewsController.getAccount);
 
 module.exports = router;

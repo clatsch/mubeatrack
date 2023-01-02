@@ -32,8 +32,26 @@ const logout = async() => {
       }, 1000);
     }
   } catch (err) {
-    console.log(err.response);
+    console.log(err.response.data.message);
     showAlert('error', 'Error logging out! Try again.');
+  }
+};
+
+// Type is either 'password' or 'data
+const updateSettings = async(data, type) => {
+  try {
+    const url = type === 'password' ? 'http://localhost:3000/api/v1/users/updateMyPassword' : 'http://localhost:3000/api/v1/users/updateMe';
+
+    const res = await axios({
+      method: 'PATCH',
+      url,
+      data,
+    });
+    if (res.data.status === 'success') {
+      showAlert('success', `${type.toUpperCase()} updated successfully!`);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
   }
 };
 
@@ -77,10 +95,7 @@ if (userDataForm) {
     e.preventDefault();
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    updateSettings({
-      name,
-      email,
-    }, 'data');
+    updateSettings({name, email}, 'data');
   });
 }
 
@@ -101,9 +116,11 @@ if (userPasswordForm) {
       'password',
     );
 
-    document.querySelector('.btn--save-password').textContent = 'Save password';
+    document.querySelector('.btn--save-password').textContent = 'Save Password';
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
   });
 }
+
+// UPDATE SETTINGS
