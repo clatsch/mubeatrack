@@ -16,21 +16,21 @@
                         My shipments</a></li>
             </ul>
             <% if (user.role === 'admin') { %>
-            <div class="admin-nav">
-                <h5 class="admin-nav__heading">Admin</h5>
-                <ul class="side-nav">
-                    <li><a href="#">
-                            <svg>
-                                <use xlink:href="img/icons.svg#icon-users"></use>
-                            </svg>
-                            Manage users</a></li>
-                    <li><a href="#">
-                            <svg>
-                                <use xlink:href="img/icons.svg#icon-briefcase"></use>
-                            </svg>
-                            Manage shipments</a></li>
-                </ul>
-            </div>
+                <div class="admin-nav">
+                    <h5 class="admin-nav__heading">Admin</h5>
+                    <ul class="side-nav">
+                        <li><a href="#">
+                                <svg>
+                                    <use xlink:href="img/icons.svg#icon-users"></use>
+                                </svg>
+                                Manage users</a></li>
+                        <li><a href="#">
+                                <svg>
+                                    <use xlink:href="img/icons.svg#icon-briefcase"></use>
+                                </svg>
+                                Manage shipments</a></li>
+                    </ul>
+                </div>
             <% } %>
 
         </nav>
@@ -38,18 +38,24 @@
             <div class="user-view__form-container">
                 <h2 class="heading-secondary ma-bt-md">Your account settings</h2>
                 <form class="form form-user-data">
-                    <div class="form__group ma-bt-md"><label class="form__label" for="employeeNumber">Employee number</label><input
-                                class="form__input form__input--blocked" id="employeeNumber" type="text" value="<%=user.employeeNumber%>"
+                    <div class="form__group ma-bt-md"><label class="form__label" for="employeeNumber">Employee
+                            number</label><input
+                                class="form__input form__input--blocked" id="employeeNumber" type="text"
+                                value="<%= user.employeeNumber; %>"
                                 required="required"/></div>
                     <div class="form__group"><label class="form__label" for="name">Name</label><input
-                                class="form__input" id="name" type="text" value="<%=user.name%>"
+                                class="form__input" id="name" type="text" value="<%= user.name; %>"
                                 required="required"/></div>
                     <div class="form__group ma-bt-md"><label class="form__label" for="email">Email address</label><input
-                                class="form__input" id="email" type="email" value="<%=user.email%>"
+                                class="form__input" id="email" type="email" value="<%= user.email; %>"
                                 required="required"/></div>
-                    <div class="form__group form__photo-upload"><img class="form__user-photo" src="img/users/<%=user.photo%>"
-                                                                     alt="User photo"/><a class="btn-text" href="">Choose
-                            new photo</a></div>
+                    <div class="form__group form__photo-upload"><img class="form__user-photo"
+                                                                     src="img/users/<%= user.photo; %>"
+                                                                     alt="User photo"/>
+
+                        <input class="form__upload" type="file" accept="image/*" id="photo" name="photo">
+                        <label for="photo">Choose new photo</label></div>
+
                     <div class="form__group right">
                         <button class="btn btn--small btn--green">Save settings</button>
                     </div>
