@@ -1267,6 +1267,12 @@ body {
   color: #bbb;
 }
 
+.form__input--blocked {
+  pointer-events: none;
+  background-color: #a2a2a2; !important;
+  font-weight: bold;
+}
+
 .form__group:not(:last-child) {
   margin-bottom: 2.5rem;
 }

@@ -4,6 +4,12 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
+  employeeNumber: {
+    type: Number,
+    required: [true, 'An employee must have an employee number'],
+    unique: true,
+    minlength: [5, 'The employee number must be 5 numbers long'],
+  },
   name: {
     type: String,
     required: [true, 'A user must have a name'],
@@ -13,7 +19,10 @@ const userSchema = new mongoose.Schema({
     required: [true, 'A user must have an email'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
+    validate: {
+      validator: validator.isEmail,
+      message: 'Please provide a valid email',
+    },
   },
   photo: String,
   role: {
@@ -70,7 +79,7 @@ userSchema.pre('save', function(next) {
 
 userSchema.pre(/^find/, function(next) {
 // this points to the current query
-  this.find({ active: { $ne: false }} )
+  this.find({ active: { $ne: false } });
   next();
 });
 

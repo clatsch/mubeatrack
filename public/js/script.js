@@ -32,7 +32,6 @@ const logout = async() => {
       }, 1000);
     }
   } catch (err) {
-    console.log(err.response.data.message);
     showAlert('error', 'Error logging out! Try again.');
   }
 };
@@ -56,7 +55,6 @@ const updateSettings = async(data, type) => {
 };
 
 // ALERTS
-
 const hideAlert = () => {
   const el = document.querySelector('.alert');
   if (el) el.parentElement.removeChild(el);
