@@ -1,4 +1,5 @@
 {
+  "extends": ["plugin:node/recommended"],
     "rules": {
     "space-before-function-paren": ["error", {
       "anonymous": "never",
