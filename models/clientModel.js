@@ -7,9 +7,6 @@ const clientSchema = new mongoose.Schema({
   customerNumber: {
     type: Number,
   },
-  address: {
-    type: String,
-  },
   zip: {
     type: Number,
   },
@@ -28,7 +25,19 @@ const clientSchema = new mongoose.Schema({
   website: {
     type: String,
   },
-})
+  address: {
+    type: String,
+  },
+  location: {
+    // GeoJSON
+    type: {
+      type: String,
+      default: 'Point',
+      enum: ['Point'],
+    },
+    coordinates: [Number],
+  },
+});
 
 const Client = mongoose.model('Client', clientSchema);
 

@@ -30,7 +30,7 @@ exports.getAllShipments = catchAsync(async(req, res, next) => {
 });
 
 exports.getShipment = catchAsync(async(req, res, next) => {
-  const shipment = await Shipment.findById(req.params.id);
+  const shipment = await Shipment.findById(req.params.id).populate('client').populate('user');
 
   if (!shipment) {
     return next(new AppError('No shipment found with that ID', 404));
@@ -92,9 +92,10 @@ exports.deleteShipment = catchAsync(async(req, res, next) => {
 
 exports.getShipmentStats = catchAsync(async(req, res, next) => {
   const stats = await Shipment.aggregate([
-    {
-      $match: { ratingsAverage: { $gte: 4.0 } },
-    },
+    // {
+    //   $match: { ratingsAverage: { $gte: 4.0 } },
+    //   $match: { },
+    // },
     {
       $group: {
         // _id: null,
@@ -102,11 +103,10 @@ exports.getShipmentStats = catchAsync(async(req, res, next) => {
         //_id: '$difficulty',
         // _id: '$ratingsAverage',
         numShipments: { $sum: 1 },
-        numRatings: { $sum: '$ratingsQuantity' },
-        averageRating: { $avg: '$ratingsAverage' },
-        avgPrice: { $avg: '$price' },
-        minPrice: { $min: '$price' },
-        maxPrice: { $max: '$price' },
+        averageTons: { $avg: '$amount' },
+        // avgPrice: { $avg: '$price' },
+        // minPrice: { $min: '$price' },
+        // maxPrice: { $max: '$price' },
       },
     },
     {
@@ -128,11 +128,11 @@ exports.getMonthlyPlan = catchAsync(async(req, res, next) => {
 
   const plan = await Shipment.aggregate([
     {
-      $unwind: '$startDates',
+      $unwind: '$shipmentDate',
     },
     {
       $match: {
-        startDates: {
+        shipmentDate: {
           $gte: new Date(`${year}-01-01`),
           $lte: new Date(`${year}-12-31`),
         },
@@ -140,13 +140,14 @@ exports.getMonthlyPlan = catchAsync(async(req, res, next) => {
     },
     {
       $group: {
-        _id: { $month: '$startDates' },
+        _id: { $isoWeek: '$shipmentDate' },
         numShipmentStarts: { $sum: 1 },
-        shipments: { $push: '$name' },
+        shipments: { $push: '$shipmentDate' },
+        tonsPerWeek: { $sum: '$amount' },
       },
     },
     {
-      $addFields: { month: '$_id' },
+      $addFields: { isoWeek: '$_id' },
     },
     {
       $project: {
@@ -154,7 +155,7 @@ exports.getMonthlyPlan = catchAsync(async(req, res, next) => {
       },
     },
     {
-      $sort: { month: 1 },
+      $sort: { isoWeek: 1 },
     },
   ]);
 

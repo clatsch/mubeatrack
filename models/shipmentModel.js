@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 //const validator = require('validator');
 
 const shipmentSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    unique: true,
-    required: true,
-    minlength: [10, 'A shipment name must have more or equal then 10 characters'],
-  },
+  // name: {
+  //   type: String,
+  //   unique: true,
+  //   required: true,
+  //   minlength: [10, 'A shipment name must have more or equal then 10 characters'],
+  // },
   shipmentDate: {
     type: Date,
     required: [true, 'A shipment must have a date'],
@@ -17,10 +17,6 @@ const shipmentSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
-  },
-  client: {
-    type: String,
-    required: [true, 'A shipment must have a client assigned'],
   },
   amount: {
     type: Number,
@@ -42,7 +38,28 @@ const shipmentSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  client: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Client',
+    required: [true, 'Shipment must belong to a client'],
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Shipment must belong to a user'],
+  },
 });
+
+shipmentSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'client',
+    select: 'companyName',
+  }).populate({
+    path: 'user',
+    select: 'name employeeNumber',
+  })
+  next();
+})
 
 shipmentSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
