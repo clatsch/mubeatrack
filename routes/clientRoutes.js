@@ -8,4 +8,7 @@ router.route('/')
   .get(clientController.getAllClients)
   .post(authController.protect, authController.restrictsTo('admin'), clientController.createClient)
 
+router.route('/:id')
+  .delete(authController.protect, authController.restrictsTo('admin'), clientController.deleteClient)
+
 module.exports = router;

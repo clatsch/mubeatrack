@@ -1,8 +1,8 @@
 const Client = require('../models/clientModel')
 const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const Shipment = require('../models/shipmentModel');
+const factory = require('./handlerFactory');
+
 
 
 exports.getAllClients = catchAsync(async(req, res, next) => {
@@ -35,3 +35,5 @@ exports.createClient = catchAsync(async(req, res, next) => {
       },
     });
 });
+
+exports.deleteClient = factory.deleteOne(Client);

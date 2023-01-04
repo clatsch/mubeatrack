@@ -2,6 +2,7 @@ const Shipment = require('../models/shipmentModel');
 const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const factory = require('./handlerFactory');
 
 exports.aliasTopShipments = (req, res, next) => {
   req.query.limit = '5';
@@ -76,19 +77,21 @@ exports.updateShipment = catchAsync(async(req, res, next) => {
     });
 });
 
-exports.deleteShipment = catchAsync(async(req, res, next) => {
-  const shipment = await Shipment.findByIdAndDelete(req.params.id);
+exports.deleteShipment = factory.deleteOne(Shipment)
 
-  if (!shipment) {
-    return next(new AppError('No shipment found with that ID', 404));
-  }
-
-  res.status(204)
-    .json({
-      data: null,
-      status: 'success',
-    });
-});
+// exports.deleteShipment = catchAsync(async(req, res, next) => {
+//   const shipment = await Shipment.findByIdAndDelete(req.params.id);
+//
+//   if (!shipment) {
+//     return next(new AppError('No shipment found with that ID', 404));
+//   }
+//
+//   res.status(204)
+//     .json({
+//       data: null,
+//       status: 'success',
+//     });
+// });
 
 exports.getShipmentStats = catchAsync(async(req, res, next) => {
   const stats = await Shipment.aggregate([
