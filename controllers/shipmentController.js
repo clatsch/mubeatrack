@@ -46,52 +46,9 @@ exports.getShipment = catchAsync(async(req, res, next) => {
     });
 });
 
-exports.createShipment = catchAsync(async(req, res, next) => {
-  const newShipment = await Shipment.create(req.body);
-
-  res.status(201)
-    .json({
-      status: 'success',
-      data: {
-        shipment: newShipment,
-      },
-    });
-});
-
-exports.updateShipment = catchAsync(async(req, res, next) => {
-  const shipment = await Shipment.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!shipment) {
-    return next(new AppError('No shipment found with that ID', 404));
-  }
-
-  res.status(200)
-    .json({
-      status: 'success',
-      data: {
-        shipment,
-      },
-    });
-});
-
-exports.deleteShipment = factory.deleteOne(Shipment)
-
-// exports.deleteShipment = catchAsync(async(req, res, next) => {
-//   const shipment = await Shipment.findByIdAndDelete(req.params.id);
-//
-//   if (!shipment) {
-//     return next(new AppError('No shipment found with that ID', 404));
-//   }
-//
-//   res.status(204)
-//     .json({
-//       data: null,
-//       status: 'success',
-//     });
-// });
+exports.createShipment = factory.createOne(Shipment);
+exports.updateShipment = factory.updateOne(Shipment);
+exports.deleteShipment = factory.deleteOne(Shipment);
 
 exports.getShipmentStats = catchAsync(async(req, res, next) => {
   const stats = await Shipment.aggregate([

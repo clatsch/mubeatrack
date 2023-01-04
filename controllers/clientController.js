@@ -24,16 +24,6 @@ exports.getAllClients = catchAsync(async(req, res, next) => {
     });
 });
 
-exports.createClient = catchAsync(async(req, res, next) => {
-  const newClient = await Client.create(req.body);
-
-  res.status(201)
-    .json({
-      status: 'success',
-      data: {
-        client: newClient,
-      },
-    });
-});
-
+exports.createClient = factory.createOne(Client);
+exports.updateClient = factory.updateOne(Client);
 exports.deleteClient = factory.deleteOne(Client);
