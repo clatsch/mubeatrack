@@ -9,6 +9,7 @@ router.route('/')
   .post(authController.protect, authController.restrictsTo('admin'), clientController.createClient);
 
 router.route('/:id')
+  .get(authController.protect, authController.restrictsTo('admin'), clientController.getClient)
   .patch(authController.protect, authController.restrictsTo('admin'), clientController.updateClient)
   .delete(authController.protect, authController.restrictsTo('admin'), clientController.deleteClient);
 

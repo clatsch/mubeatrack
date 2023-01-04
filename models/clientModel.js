@@ -37,7 +37,20 @@ const clientSchema = new mongoose.Schema({
     },
     coordinates: [Number],
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Client must belong to a user'],
+  },
 });
+
+clientSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'user',
+    select: 'name employeeNumber',
+  })
+  next();
+})
 
 const Client = mongoose.model('Client', clientSchema);
 

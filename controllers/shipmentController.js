@@ -1,8 +1,13 @@
 const Shipment = require('../models/shipmentModel');
-const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
+
+// ToCheck - Nested routes
+exports.setShipmentUserIds = (req, res, next) => {
+  if (!req.body.shipment) req.body.shipment = req.params.shipmentId;
+  if (!req.body.user) req.body.user = req.user._id;
+  next();
+}
 
 exports.aliasTopShipments = (req, res, next) => {
   req.query.limit = '5';
@@ -11,41 +16,8 @@ exports.aliasTopShipments = (req, res, next) => {
   next();
 };
 
-exports.getAllShipments = catchAsync(async(req, res, next) => {
-  const features = new APIFeatures(Shipment.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const shipments = await features.query;
-
-  // SEND RESPONSE
-  res.status(200)
-    .json({
-      status: 'success',
-      results: shipments.length,
-      data: {
-        shipments: shipments,
-      },
-    });
-});
-
-exports.getShipment = catchAsync(async(req, res, next) => {
-  const shipment = await Shipment.findById(req.params.id).populate('client').populate('user');
-
-  if (!shipment) {
-    return next(new AppError('No shipment found with that ID', 404));
-  }
-
-  res.status(200)
-    .json({
-      status: 'success',
-      data: {
-        shipment,
-      },
-    });
-});
-
+exports.getAllShipments = factory.getAll(Shipment);
+exports.getShipment = factory.getOne(Shipment);
 exports.createShipment = factory.createOne(Shipment);
 exports.updateShipment = factory.updateOne(Shipment);
 exports.deleteShipment = factory.deleteOne(Shipment);
