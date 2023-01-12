@@ -8,10 +8,6 @@ exports.getOverview = catchAsync(async(req, res, next) => {
 
   // 3) Render that template using data from 1)
   res.status(200)
-    .set(
-      'Content-Security-Policy',
-      // eslint-disable-next-line quotes
-      'connect-src \'self\' https://cdnjs.cloudflare.com')
     .render('overview', {
       title: 'Shipments Overview',
       shipments,
@@ -27,10 +23,6 @@ exports.getShipment = (req, res) => {
 
 exports.getLoginForm = (req, res) => {
   res.status(200)
-    .set(
-      'Content-Security-Policy',
-      // eslint-disable-next-line quotes
-      'connect-src \'self\' https://cdnjs.cloudflare.com')
     .render('login', {
       title: 'Log into your account',
     });
@@ -38,10 +30,6 @@ exports.getLoginForm = (req, res) => {
 
 exports.getAccount = (req, res) => {
   res.status(200)
-    .set(
-      'Content-Security-Policy',
-      // eslint-disable-next-line quotes
-      'connect-src \'self\' https://cdnjs.cloudflare.com')
     .render('account', {
       title: 'Your account',
     });

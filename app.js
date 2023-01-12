@@ -8,21 +8,24 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 
-
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const shipmentRouter = require('./routes/shipmentRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
-const clientRouter = require('./routes/clientRoutes')
-
+const clientRouter = require('./routes/clientRoutes');
 
 // Start express app
 const app = express();
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers
-app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    scriptSrc: ['\'self\'', 'https://cdnjs.cloudflare.com'],
+  },
+}))
+;
 app.set('view engine', 'ejs');
 
 // could also be './views', but this is safer
@@ -54,11 +57,10 @@ app.use(mongoSanitize({
 }));
 
 // Data sanitization against XSS
-app.use(xss())
+app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
-
 
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -74,7 +76,7 @@ app.use((req, res, next) => {
 app.use('/', viewRouter);
 app.use('/api/v1/shipments', shipmentRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/clients', clientRouter)
+app.use('/api/v1/clients', clientRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

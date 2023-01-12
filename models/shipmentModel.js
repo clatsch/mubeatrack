@@ -3,12 +3,6 @@ const mongoose = require('mongoose');
 //const validator = require('validator');
 
 const shipmentSchema = new mongoose.Schema({
-  // name: {
-  //   type: String,
-  //   unique: true,
-  //   required: true,
-  //   minlength: [10, 'A shipment name must have more or equal then 10 characters'],
-  // },
   shipmentDate: {
     type: Date,
     required: [true, 'A shipment must have a date'],
