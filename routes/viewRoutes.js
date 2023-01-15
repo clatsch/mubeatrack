@@ -8,6 +8,8 @@ const router = express.Router();
 router.get('/', authController.isLoggedIn, viewsController.getLoginForm)
 router.get('/overview', authController.protect, viewsController.getOverview );
 router.get('/shipment', authController.protect, viewsController.getShipment);
+router.get('/clients', authController.protect, viewsController.getClients)
+router.get('/newClient', authController.protect, viewsController.getNewClient)
 router.get('/me', authController.protect, viewsController.getAccount);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const Shipment = require('../models/shipmentModel');
+const Client = require('../models/clientModel');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getOverview = catchAsync(async(req, res, next) => {
@@ -33,6 +34,22 @@ exports.getAccount = (req, res) => {
     .render('account', {
       title: 'Your account',
     });
-}
+};
+
+exports.getClients = catchAsync(async(req, res, next) => {
+  const clients = await Client.find();
+  res.status(200)
+    .render('clients', {
+      title: 'Clients',
+      clients,
+    });
+});
+
+exports.getNewClient = (req, res) => {
+  res.status(200)
+    .render('newClient', {
+      title: 'Create new client',
+    });
+};
 
 

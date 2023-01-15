@@ -1,0 +1,25 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <table>
+        <tr>
+            <th>Company Name</th>
+            <th>Customer Number</th>
+            <th>E-Mail</th>
+        </tr>
+        <br>
+        <% for(let i=0; i < clients.length; i++) { %>
+            <tr>
+                <!--<td><%= i+1 %></td>-->
+                <td><%= clients[i].companyName; %></td>
+                <td><%= clients[i].customerNumber %></td>
+                <td><%= clients[i].email %></td>
+            </tr>
+        <% } %>
+    </table>
+
+    <a class="btn btn--small btn--green" href="/newClient">Create new Client</a>
+
+</main>
+
+<%- include('_footer') -%>

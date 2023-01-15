@@ -1,3 +1,4 @@
+// ---- ACCOUNT ----
 const login = async(email, password) => {
   try {
     const res = await axios({
@@ -13,7 +14,7 @@ const login = async(email, password) => {
       showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
         location.assign('/overview');
-      }, 1500);
+      }, 1200);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
@@ -46,6 +47,7 @@ const updateSettings = async(data, type) => {
       url,
       data,
     });
+
     if (res.data.status === 'success') {
       showAlert('success', `${type.toUpperCase()} updated successfully!`);
     }
@@ -54,7 +56,26 @@ const updateSettings = async(data, type) => {
   }
 };
 
-// ALERTS
+// ---- CLIENTS ----
+
+// const createClient = async(companyName, customerNumber, email) => {
+const createClient = async data => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: 'http://localhost:3000/api/v1/clients',
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'successfully created');
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+// ---- ALERTS ----
 const hideAlert = () => {
   const el = document.querySelector('.alert');
   if (el) el.parentElement.removeChild(el);
@@ -74,6 +95,7 @@ const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const clientDataForm = document.querySelector('.form-client-data');
 
 // DELEGATION
 if (loginForm) {
@@ -120,6 +142,25 @@ if (userPasswordForm) {
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
+  });
+}
+
+if (clientDataForm) {
+  clientDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    // const form = new FormData();
+    const companyName = document.getElementById('companyName').value
+    const customerNumber = document.getElementById('customerNumber').value
+    const email = document.getElementById('email').value
+    // form.append('companyName', document.getElementById('companyName').value)
+    // form.append('customerNumber', document.getElementById('customerNumber').value)
+    // form.append('email', document.getElementById('email').value)
+
+    createClient({
+      companyName,
+      customerNumber,
+      email,
+    });
   });
 }
 
