@@ -20,12 +20,17 @@ const app = express();
 
 // GLOBAL MIDDLEWARES
 // Set security HTTP headers
+
+
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    scriptSrc: ['\'self\'', 'https://cdnjs.cloudflare.com'],
-  },
+    defaultSrc: ['\'self\''],
+    scriptSrc: ['\'self\'', 'cdnjs.cloudflare.com', 'code.jquery.com', 'cdn.datatables.net'],
+      },
 }))
 ;
+
+
 app.set('view engine', 'ejs');
 
 // could also be './views', but this is safer

@@ -58,6 +58,49 @@ const updateSettings = async(data, type) => {
 
 // ---- CLIENTS ----
 
+const showClients = async() => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://localhost:3000/api/v1/clients',
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'successfully fetched');
+
+      $('#clientTable')
+        .DataTable({
+          'data': res.data.data.data,
+          'columns': [
+            {
+              data: '_id',
+              visible: false,
+            },
+            { data: 'companyName' },
+            { data: 'customerNumber' },
+            { data: 'email' },
+            {
+              data: '_id',
+              render : function( data ) {
+                return '<button id="' + data + '" class="delete-button">Delete</button>';
+              }},
+          ],
+        });
+    }
+    const buttons = document.getElementsByClassName('delete-button');
+    const buttonPressed = e => {
+      deleteClient(e.target.id);
+    }
+
+
+    for (let button of buttons) {
+      button.addEventListener('click', buttonPressed);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 // const createClient = async(companyName, customerNumber, email) => {
 const createClient = async data => {
   try {
@@ -66,9 +109,29 @@ const createClient = async data => {
       url: 'http://localhost:3000/api/v1/clients',
       data,
     });
-
+    console.log(res.data.status);
     if (res.data.status === 'success') {
       showAlert('success', 'successfully created');
+      window.setTimeout(() => {
+        location.assign('/overview');
+      }, 1000);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const deleteClient = async id => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: 'http://localhost:3000/api/v1/clients/' + id,
+    });
+    $('#clientTable').data.reload();
+
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'successfully deleted');
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
@@ -96,6 +159,7 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const clientDataForm = document.querySelector('.form-client-data');
+const clientTable = document.querySelector('.clientTable');
 
 // DELEGATION
 if (loginForm) {
@@ -113,8 +177,8 @@ if (userDataForm) {
   userDataForm.addEventListener('submit', e => {
     e.preventDefault();
     const form = new FormData();
-    form.append('name', document.getElementById('name').value)
-    form.append('email', document.getElementById('email').value)
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
 
     updateSettings(form, 'data');
@@ -149,9 +213,9 @@ if (clientDataForm) {
   clientDataForm.addEventListener('submit', e => {
     e.preventDefault();
     // const form = new FormData();
-    const companyName = document.getElementById('companyName').value
-    const customerNumber = document.getElementById('customerNumber').value
-    const email = document.getElementById('email').value
+    const companyName = document.getElementById('companyName').value;
+    const customerNumber = document.getElementById('customerNumber').value;
+    const email = document.getElementById('email').value;
     // form.append('companyName', document.getElementById('companyName').value)
     // form.append('customerNumber', document.getElementById('customerNumber').value)
     // form.append('email', document.getElementById('email').value)
@@ -164,4 +228,9 @@ if (clientDataForm) {
   });
 }
 
-// UPDATE SETTINGS
+if (clientTable) {
+  showClients();
+}
+
+
+
