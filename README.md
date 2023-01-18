@@ -1,0 +1,18 @@
+# ServerProjekt0001
+
+## Project Setup
+### Server
+```
+npm install
+```
+
+
+
+start server with `npm run dev` --> start with nodemon (server start automatically, when do some code- changes)
+
+or
+
+start server with `node server.mjs`
+
+# selenium_test....
+#mocha test....
