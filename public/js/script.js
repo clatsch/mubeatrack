@@ -56,6 +56,127 @@ const updateSettings = async(data, type) => {
   }
 };
 
+// ---- SHIPMENTS ----
+const showShipments = async() => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://localhost:3000/api/v1/shipments',
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'success');
+      $('#shipmentsTable')
+        .DataTable()
+        .destroy();
+      $('#shipmentsTable')
+        .on('click', '.delete-button', function() {
+          const id = $(this)
+            .attr('id');
+          deleteShipment(id);
+        });
+      $('#shipmentsTable')
+        .on('click', '.edit-button', function() {
+          const id = $(this)
+            .attr('id');
+          location.assign(`/shipment/${id}`);
+        });
+
+      $('#shipmentsTable')
+        .DataTable({
+          'data': res.data.data.data,
+          'columns': [
+            {
+              data: '_id',
+              visible: false,
+            },
+            {
+              data: 'shipmentDate',
+              render: function(data) {
+                let date = new Date(data);
+                let month = date.getMonth() + 1;
+                return date.getDate() + '.' + (month.toString().length > 1 ? month : '0' + month) + '.' + date.getFullYear();
+              },
+            },
+            { data: 'client.companyName' },
+            { data: 'amount' },
+            {
+              data: 'inStock',
+              render: function(data) {
+                if (data) {
+                  return '<input type="checkbox" checked disabled>';
+                } else {
+                  return '<input type="checkbox" disabled>';
+                }
+              },
+            },
+            {
+              data: 'deliveryNote',
+              render: function(data) {
+                if (data) {
+                  return '<input type="checkbox" checked disabled>';
+                } else {
+                  return '<input type="checkbox" disabled>';
+                }
+              },
+            },
+            {
+              data: 'rk',
+              render: function(data) {
+                if (data) {
+                  return '<input type="checkbox" checked disabled>';
+                } else {
+                  return '<input type="checkbox" disabled>';
+                }
+              },
+            },
+            { data: 'comment' },
+            {
+              data: '_id',
+              render: function(data) {
+                return '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>' + '   ' + '<a href="#" id="' + data + '" class="delete-button"><i class="fas fa-trash-alt"></i></a>';
+              },
+            },
+          ],
+        });
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const createShipment = async data => {
+  try {
+    // Get the id of the currently logged in user
+
+    const res = await axios({
+      method: 'POST',
+      url: 'http://localhost:3000/api/v1/shipments',
+      data,
+    });
+    if (res.data.status === 'success') {
+      showAlert('success', 'successfully created');
+      window.setTimeout(() => {
+        location.assign('/shipments');
+      }, 1000);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const deleteShipment = async id => {
+  try {
+    await axios({
+      method: 'DELETE',
+      url: 'http://localhost:3000/api/v1/shipments/' + id,
+    });
+    showShipments();
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 // ---- CLIENTS ----
 
 const showClients = async() => {
@@ -66,9 +187,11 @@ const showClients = async() => {
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'successfully fetched');
-
-      $('#clientTable')
+      showAlert('success', 'success');
+      $('#clientsTable')
+        .DataTable()
+        .destroy();
+      $('#clientsTable')
         .DataTable({
           'data': res.data.data.data,
           'columns': [
@@ -81,21 +204,31 @@ const showClients = async() => {
             { data: 'email' },
             {
               data: '_id',
-              render : function( data ) {
-                return '<button id="' + data + '" class="delete-button">Delete</button>';
-              }},
+              render: function(data) {
+                return '<button id="' + data + '" class="delete-button">Delete</button>' + ' ' + '<button id="' + data + '" class="edit-button">Edit</button>';
+              },
+            },
           ],
         });
     }
-    const buttons = document.getElementsByClassName('delete-button');
-    const buttonPressed = e => {
+    const deleteButtons = document.getElementsByClassName('delete-button');
+    const editButtons = document.getElementsByClassName('edit-button');
+    const deleteButtonPressed = e => {
       deleteClient(e.target.id);
+    };
+
+    const editButtonPressed = e => {
+      location.assign(`/clients/${e.target.id}`);
+    };
+
+    for (let button of deleteButtons) {
+      button.addEventListener('click', deleteButtonPressed);
     }
 
-
-    for (let button of buttons) {
-      button.addEventListener('click', buttonPressed);
+    for (let button of editButtons) {
+      button.addEventListener('click', editButtonPressed);
     }
+
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
@@ -113,7 +246,26 @@ const createClient = async data => {
     if (res.data.status === 'success') {
       showAlert('success', 'successfully created');
       window.setTimeout(() => {
-        location.assign('/overview');
+        location.assign('/clients');
+      }, 1000);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const editClient = async data => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: 'http://localhost:3000/api/v1/clients',
+      data,
+    });
+    console.log(res.data.status);
+    if (res.data.status === 'success') {
+      showAlert('success', 'successfully created');
+      window.setTimeout(() => {
+        location.assign('/clients');
       }, 1000);
     }
   } catch (err) {
@@ -123,16 +275,11 @@ const createClient = async data => {
 
 const deleteClient = async id => {
   try {
-    const res = await axios({
+    await axios({
       method: 'DELETE',
       url: 'http://localhost:3000/api/v1/clients/' + id,
     });
-    $('#clientTable').data.reload();
-
-
-    if (res.data.status === 'success') {
-      showAlert('success', 'successfully deleted');
-    }
+    showClients();
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
@@ -158,8 +305,11 @@ const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const newClientDataForm = document.querySelector('.form-client-data');
 const clientDataForm = document.querySelector('.form-client-data');
-const clientTable = document.querySelector('.clientTable');
+const clientsTable = document.querySelector('.clientsTable');
+const shipmentsTable = document.querySelector('.shipmentsTable');
+const newShipmentDataForm = document.querySelector('.form-shipment-data');
 
 // DELEGATION
 if (loginForm) {
@@ -209,16 +359,12 @@ if (userPasswordForm) {
   });
 }
 
-if (clientDataForm) {
-  clientDataForm.addEventListener('submit', e => {
+if (newClientDataForm) {
+  newClientDataForm.addEventListener('submit', e => {
     e.preventDefault();
-    // const form = new FormData();
     const companyName = document.getElementById('companyName').value;
     const customerNumber = document.getElementById('customerNumber').value;
     const email = document.getElementById('email').value;
-    // form.append('companyName', document.getElementById('companyName').value)
-    // form.append('customerNumber', document.getElementById('customerNumber').value)
-    // form.append('email', document.getElementById('email').value)
 
     createClient({
       companyName,
@@ -228,8 +374,53 @@ if (clientDataForm) {
   });
 }
 
-if (clientTable) {
+if (clientDataForm) {
+  newClientDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const companyName = document.getElementById('companyName').value;
+    const customerNumber = document.getElementById('customerNumber').value;
+    const email = document.getElementById('email').value;
+
+    createClient({
+      companyName,
+      customerNumber,
+      email,
+    });
+  });
+}
+
+if (clientsTable) {
   showClients();
+}
+
+if (shipmentsTable) {
+  showShipments();
+}
+
+if (newShipmentDataForm) {
+  newShipmentDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const select = document.getElementById('companyName');
+    const client = select.value;
+    const shipmentDate = document.getElementById('date').value;
+    const amount = document.getElementById('amount').value;
+    const inStock = document.getElementById('inStock').checked;
+    const deliveryNote = document.getElementById('deliveryNote').checked;
+    const rk = document.getElementById('rk').checked;
+    const comment = document.getElementById('comment').value;
+    const user = document.getElementById('userId').value;
+
+    createShipment({
+      shipmentDate,
+      client,
+      amount,
+      inStock,
+      deliveryNote,
+      rk,
+      comment,
+      user,
+    });
+  });
 }
 
 

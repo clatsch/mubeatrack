@@ -1,0 +1,56 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <div class="user-view__content">
+        <div class="user-view__form-container">
+            <h2 class="heading-secondary ma-bt-md">New shipment</h2>
+            <form class="form form-shipment-data">
+                <div class="form__group">
+                    <label class="form__label" for="date">Date</label>
+                    <input class="form__input" id="date" type="date"/>
+                </div>
+
+                <div class="form__group ma-bt-md">
+                    <label class="form__label" for="client">Company Name</label>
+                    <select class="form__input" id="companyName">
+                        <% for (let i = 0; i < clients.length; i++) { %>
+                            <option value="<%= clients[i]._id ;%>"><%= clients[i].companyName ;%></option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <div class="form__group">
+                    <label class="form__label" for="amount">Amount</label>
+                    <input class="form__input" id="amount" type="number" min="0"/>
+                </div>
+
+                <div class="form__group">
+                    <label class="form__label" for="inStock">In Stock</label>
+                    <input class="form__input" id="inStock" type="checkbox"/>
+                </div>
+
+                <div class="form__group">
+                    <label class="form__label" for="deliveryNote">Delivery Note</label>
+                    <input class="form__input" id="deliveryNote" type="checkbox"/>
+                </div>
+
+                <div class="form__group">
+                    <label class="form__label" for="rk">RK</label>
+                    <input class="form__input" id="rk" type="checkbox"/>
+                </div>
+
+                <div class="form__group">
+                    <label class="form__label" for="comment">Comment</label>
+                    <input class="form__input" id="comment" type="text" min="0"/>
+                </div>
+
+                <input type="hidden" id="userId" value="<%= user._id %>">
+                <button class="btn btn--small btn--green">Create Shipment</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('_footer') -%>
+
+

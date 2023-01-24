@@ -1,0 +1,21 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <div class="user-view__content">
+        <div class="user-view__form-container">
+            <h2 class="heading-secondary ma-bt-md">Shipment</h2>
+            <form class="form form-client-data">
+                <div class="form__group ma-bt-md"><label class="form__label" for="companyName">Client</label><input
+                            class="form__input" id="companyName" type="text"/></div>
+                <div class="form__group"><label class="form__label" for="customerNumber">Amount</label><input
+                            class="form__input" id="customerNumber" type="text" value="<%= shipment.amount; %>"/></div>
+                <div class="form__group ma-bt-md"><label class="form__label" for="inStock">in Stock</label><input
+                            class="form__input" id="email" type="checkbox" value="<%= shipment.inStock; %>"/></div>
+
+                <button class="btn btn--small btn--green">Save Shipment</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('_footer') -%>

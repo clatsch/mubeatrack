@@ -1,0 +1,22 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <div class="user-view__content">
+        <div class="user-view__form-container">
+            <h2 class="heading-secondary ma-bt-md">New client</h2>
+            <form class="form form-client-data">
+                <div class="form__group ma-bt-md"><label class="form__label" for="companyName">Company
+                        Name</label><input
+                            class="form__input" id="companyName" type="text"/></div>
+                <div class="form__group"><label class="form__label" for="customerNumber">Customer number</label><input
+                            class="form__input" id="customerNumber" type="text" value="<%= client.companyName; %>"/></div>
+                <div class="form__group ma-bt-md"><label class="form__label" for="email">Email address</label><input
+                            class="form__input" id="email" type="email"/></div>
+
+                <button class="btn btn--small btn--green">Save Client</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('_footer') -%>

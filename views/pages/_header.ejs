@@ -4,23 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src='https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js'></script>
     <script type="module" src="/js/script.js"></script>
-    <link rel="shortcut icon" type="image/background.png" href="img/favicon.png">
+    <link rel="shortcut icon" type="../image/background.png" href="../img/favicon.png">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css">
+    </link>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300i,700">
     <title>MubeaTrack | <%=title%></title>
 </head>
 <header class="header">
-    <nav class="nav nav--tours"><a class="nav__el" href="#">All Shipments</a></nav>
-    <div class="header__logo"><img src="img/logo-color.png" alt="MubeaTrack logo" /></div>
+    <nav class="nav nav--tours"><a class="nav__el" href="/shipments">All Shipments</a></nav>
+    <div class="header__logo"><img src="../img/logo-color.png" alt="MubeaTrack logo" /></div>
     <% if (locals.user) { %>
     <a class="nav__el nav__el--clients" href="/clients">Manage Clients</a>
     <a class="nav__el nav__el--logout" href="#">Log out</a>
-    <a class="nav__el" href="/me"><img class="nav__user-img" src="img/users/<%=user.photo%>" alt="Photo of <%=user.name%>" /><span><%=user.name.split(' ')[0]%></span></a>
+    <a class="nav__el" href="/me"><img class="nav__user-img" src="../img/users/<%=user.photo%>" alt="Photo of <%=user.name%>" /><span><%=user.name.split(' ')[0]%></span></a>
 
     <% } else{ %>
     <nav class="nav nav--user"><a class="nav__el" href="#">Log in</a><a class="nav__el nav__el--cta" href="#">Sign up</a>
