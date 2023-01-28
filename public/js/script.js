@@ -72,7 +72,7 @@ const showShipments = async() => {
       $('#shipmentsTable')
         .on('click', '.delete-button', function() {
           const id = $(this)
-            .attr('id');
+            .attr('data-id');
           deleteShipment(id);
         });
       $('#shipmentsTable')
@@ -95,7 +95,7 @@ const showShipments = async() => {
               render: function(data) {
                 let date = new Date(data);
                 let month = date.getMonth() + 1;
-                return date.getDate() + '.' + (month.toString().length > 1 ? month : '0' + month) + '.' + date.getFullYear();
+                return (date.getDate().toString().length < 2 ? '0' : '') + date.getDate() + '.' + (month.toString().length > 1 ? month : '0' + month) + '.' + date.getFullYear();
               },
             },
             { data: 'client.companyName' },
@@ -109,6 +109,7 @@ const showShipments = async() => {
                   return '<input type="checkbox" disabled>';
                 }
               },
+              orderable: false,
             },
             {
               data: 'deliveryNote',
@@ -119,6 +120,7 @@ const showShipments = async() => {
                   return '<input type="checkbox" disabled>';
                 }
               },
+              orderable: false,
             },
             {
               data: 'rk',
@@ -129,13 +131,18 @@ const showShipments = async() => {
                   return '<input type="checkbox" disabled>';
                 }
               },
+              orderable: false,
             },
-            { data: 'comment' },
+            {
+              data: 'comment',
+              orderable: false,
+            },
             {
               data: '_id',
               render: function(data) {
-                return '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>' + '   ' + '<a href="#" id="' + data + '" class="delete-button"><i class="fas fa-trash-alt"></i></a>';
+                return '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>' + '   ' + '<a href="#" data-id="' + data + '" class="delete-button"><i class="fas fa-trash-alt"></i></a>';
               },
+              orderable: false,
             },
           ],
         });
@@ -167,11 +174,14 @@ const createShipment = async data => {
 
 const deleteShipment = async id => {
   try {
-    await axios({
+    const res = await axios({
       method: 'DELETE',
-      url: 'http://localhost:3000/api/v1/shipments/' + id,
+      url: `http://localhost:3000/api/v1/shipments/${id}`,
     });
-    showShipments();
+    if (res.data.status === 'success') {
+      showAlert('success', 'Shipment successfully deleted.');
+      showShipments();
+    }
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
@@ -218,7 +228,7 @@ const showClients = async() => {
     };
 
     const editButtonPressed = e => {
-      location.assign(`/clients/${e.target.id}`);
+      location.assign(`/shipment/${e.target.id}`);
     };
 
     for (let button of deleteButtons) {

@@ -17,8 +17,8 @@ exports.getShipments = catchAsync(async(req, res, next) => {
 });
 
 exports.getShipment = catchAsync(async(req, res, next) => {
-  // 1) Get the data, for the requested tour (including reviews and guides)
-  const shipment = await Shipment.findOne({ slug: req.params.id });
+  // 1) Get the data, for the requested shipment
+  const shipment = await Shipment.findOne({ _id: req.params.id  });
 
   if (!shipment) {
     return next(new AppError('There is no Shipment with that ID.', 404));
@@ -29,9 +29,10 @@ exports.getShipment = catchAsync(async(req, res, next) => {
       title: 'Shipment',
       shipment,
     });
+
 });
 
-exports.getNewShipment = catchAsync(async (req, res) => {
+exports.getNewShipment = catchAsync(async(req, res) => {
   const clients = await Client.find({});
   res.status(200)
     .render('newShipment', {

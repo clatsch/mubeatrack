@@ -3,14 +3,33 @@
 <main class="main">
     <div class="user-view__content">
         <div class="user-view__form-container">
-            <h2 class="heading-secondary ma-bt-md">Shipment</h2>
+            <h2 class="heading-secondary ma-bt-md">Edit Shipment</h2>
             <form class="form form-client-data">
-                <div class="form__group ma-bt-md"><label class="form__label" for="companyName">Client</label><input
-                            class="form__input" id="companyName" type="text"/></div>
+                <div class="form__group ma-bt-md"><label class="form__label" for="client">Client</label><input
+                            class="form__input" id="client" type="text" value="<%= shipment.client.companyName; %>"/>
+                </div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="shipmentDate">Shipment
+                        Date</label><input
+                            class="form__input" id="shipmentDate" type="text" value="<%= shipment.shipmentDate; %>"/>
+                </div>
+
                 <div class="form__group"><label class="form__label" for="customerNumber">Amount</label><input
                             class="form__input" id="customerNumber" type="text" value="<%= shipment.amount; %>"/></div>
+
                 <div class="form__group ma-bt-md"><label class="form__label" for="inStock">in Stock</label><input
-                            class="form__input" id="email" type="checkbox" value="<%= shipment.inStock; %>"/></div>
+                            class="form__input" id="email" type="checkbox" value="<%= shipment.inStock; %>" <%= shipment.inStock ? 'checked' : '' %>/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="deliveryNote">Delivery Note</label>
+                    <input class="form__input" id="deliveryNote" type="checkbox" <%= shipment.deliveryNote ? 'checked' : '' %>/>
+                </div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="rk">RK</label><input
+                            class="form__input" id="rk" type="checkbox" value="<%= shipment.rk; %>" <%= shipment.rk ? 'checked' : '' %>/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="comment">Comment</label><input
+                            class="form__input" id="comment" type="text" value="<%= shipment.comment; %>"/></div>
+
 
                 <button class="btn btn--small btn--green">Save Shipment</button>
             </form>
