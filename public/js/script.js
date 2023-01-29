@@ -21,6 +21,52 @@ const login = async(email, password) => {
   }
 };
 
+const forgotPassword = async email => {
+  try {
+      const res = await axios({
+      method: 'POST',
+      url: 'http://localhost:3000/api/v1/users/forgotpassword',
+      data: {
+        email,
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Token send to E-Mail');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1200);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const resetPassword = async(password, passwordConfirm) => {
+  const {pathname} = window.location;
+  const pathArray = pathname.split('/');
+  const token = pathArray[pathArray.length - 1];
+  try {
+      const res = await axios({
+      method: 'PATCH',
+      url: 'http://localhost:3000/api/v1/users/resetPassword/' + token,
+      data: {
+        password,
+        passwordConfirm,
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Password successfully reset');
+      window.setTimeout(() => {
+        location.assign('/shipments');
+      }, 1200);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 const signup = async(employeeNumber, name, email, role, password, passwordConfirm) => {
   try {
     const res = await axios({
@@ -448,6 +494,8 @@ const showAlert = (type, msg) => {
 
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
+const forgotPasswordForm = document.querySelector('.form--forgotpassword');
+const resetPasswordForm = document.querySelector('.form--resetpassword');
 const logOutBtn = document.querySelector('.nav__el--logout');
 
 const currentUserDataForm = document.querySelector('.form-user-data');
@@ -473,6 +521,22 @@ if (loginForm) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     login(email, password);
+  });
+}
+
+if (forgotPasswordForm) {
+  forgotPasswordForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    forgotPassword(email);
+  });
+}
+if (resetPasswordForm) {
+  resetPasswordForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    resetPassword(password, passwordConfirm);
   });
 }
 

@@ -6,6 +6,8 @@ const router = express.Router();
 
 // isLoggedIn in unprotected routes, if globally, query of isLoggedIn and protect would both run
 router.get('/', authController.isLoggedIn, viewsController.getLoginForm)
+router.get('/forgotpassword', authController.isLoggedIn, viewsController.getForgotPasswordForm)
+router.get('/resetpassword/:token', authController.isLoggedIn, viewsController.getResetPasswordForm)
 router.get('/shipments', authController.protect, viewsController.getShipments );
 router.get('/shipment/:id', authController.protect, viewsController.getShipment);
 router.get('/newShipment', authController.protect, viewsController.getNewShipment);

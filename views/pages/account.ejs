@@ -2,38 +2,6 @@
 
 <main class="main">
     <div class="user-view">
-        <nav class="user-view__menu">
-            <ul class="side-nav">
-                <li class="side-nav--active"><a href="#">
-                        <svg>
-                            <use xlink:href="img/icons.svg#icon-settings"></use>
-                        </svg>
-                        Settings</a></li>
-                <li><a href="#">
-                        <svg>
-                            <use xlink:href="img/icons.svg#icon-briefcase"></use>
-                        </svg>
-                        My shipments</a></li>
-            </ul>
-            <% if (user.role === 'admin') { %>
-                <div class="admin-nav">
-                    <h5 class="admin-nav__heading">Admin</h5>
-                    <ul class="side-nav">
-                        <li><a href="/users">
-                                <svg>
-                                    <use xlink:href="img/icons.svg#icon-users"></use>
-                                </svg>
-                                Manage users</a></li>
-                        <li><a href="#">
-                                <svg>
-                                    <use xlink:href="img/icons.svg#icon-briefcase"></use>
-                                </svg>
-                                Manage shipments</a></li>
-                    </ul>
-                </div>
-            <% } %>
-
-        </nav>
         <div class="user-view__content">
             <div class="user-view__form-container">
                 <h2 class="heading-secondary ma-bt-md">Your account settings</h2>
