@@ -13,7 +13,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const shipmentRouter = require('./routes/shipmentRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
-const clientRouter = require('./routes/clientRoutes');
+const customerRouter = require('./routes/customerRoutes');
 
 // Start express app
 const app = express();
@@ -57,7 +57,7 @@ app.use(cookieParser());
 // ToDo finalize options
 app.use(mongoSanitize({
   whitelist: [
-    'client', 'amount',
+    'customer', 'amount',
   ],
 }));
 
@@ -81,7 +81,7 @@ app.use((req, res, next) => {
 app.use('/', viewRouter);
 app.use('/api/v1/shipments', shipmentRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/clients', clientRouter);
+app.use('/api/v1/customers', customerRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

@@ -1,5 +1,5 @@
 const Shipment = require('../models/shipmentModel');
-const Client = require('../models/clientModel');
+const Customer = require('../models/customerModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -19,7 +19,7 @@ exports.getShipments = catchAsync(async(req, res, next) => {
 exports.getShipment = catchAsync(async(req, res, next) => {
   // 1) Get the data, for the requested shipment
   const shipment = await Shipment.findOne({ _id: req.params.id  });
-  const clients = await Client.find({})
+  const customers = await Customer.find({})
 
   if (!shipment) {
     return next(new AppError('There is no Shipment with that ID.', 404));
@@ -29,17 +29,17 @@ exports.getShipment = catchAsync(async(req, res, next) => {
     .render('shipment', {
       title: 'Shipment',
       shipment,
-      clients,
+      customers,
     });
 
 });
 
 exports.getNewShipment = catchAsync(async(req, res) => {
-  const clients = await Client.find({});
+  const customers = await Customer.find({});
   res.status(200)
     .render('newShipment', {
       title: 'Create new shipment',
-      clients,
+      customers,
     });
 });
 
@@ -57,26 +57,34 @@ exports.getAccount = (req, res) => {
     });
 };
 
-exports.getClients = catchAsync(async(req, res, next) => {
-  const clients = await Client.find();
+exports.getCustomers = catchAsync(async(req, res, next) => {
+  const customers = await Customer.find();
   res.status(200)
-    .render('clients', {
-      title: 'Clients',
-      clients,
+    .render('customers', {
+      title: 'Customers',
+      customers,
     });
 });
 
-exports.getClient = (req, res) => {
-  res.status(200)
-    .render('client', {
-      title: 'This is a client',
-    });
-};
+exports.getCustomer = catchAsync(async(req, res, next) => {
+  // 1) Get the data, for the requested shipment
+  const customer = await Customer.findOne({ _id: req.params.id  });
 
-exports.getNewClient = (req, res) => {
+  if (!customer) {
+    return next(new AppError('There is no Customer with that ID.', 404));
+  }
+
   res.status(200)
-    .render('newClient', {
-      title: 'Create new client',
+    .render('customer', {
+      title: 'Customer',
+      customer,
+    });
+});
+
+exports.getNewCustomer = (req, res) => {
+  res.status(200)
+    .render('newCustomer', {
+      title: 'Create new customer',
     });
 };
 

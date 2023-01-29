@@ -13,7 +13,7 @@ const login = async(email, password) => {
     if (res.data.status === 'success') {
       showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
-        location.assign('/overview');
+        location.assign('/shipments');
       }, 1200);
     }
   } catch (err) {
@@ -99,7 +99,7 @@ const showShipments = async() => {
                   .toString().length < 2 ? '0' : '') + date.getDate() + '.' + (month.toString().length > 1 ? month : '0' + month) + '.' + date.getFullYear();
               },
             },
-            { data: 'client.companyName' },
+            { data: 'customer.companyName' },
             { data: 'amount' },
             {
               data: 'inStock',
@@ -205,21 +205,34 @@ const updateShipment = async(data, id) => {
   }
 };
 
-// ---- CLIENTS ----
+// ---- CUSTOMERS ----
 
-const showClients = async() => {
+const showCustomers = async() => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/v1/clients',
+      url: 'http://localhost:3000/api/v1/customers',
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'success');
-      $('#clientsTable')
+      // showAlert('success', 'success');
+      $('#customersTable')
         .DataTable()
         .destroy();
-      $('#clientsTable')
+      $('#customersTable')
+        .on('click', '.delete-button', function() {
+          const id = $(this)
+            .attr('data-id');
+          deleteCustomer(id);
+        });
+      $('#customersTable')
+        .on('click', '.edit-button', function() {
+          const id = $(this)
+            .attr('id');
+          location.assign(`/customer/${id}`);
+        });
+
+      $('#customersTable')
         .DataTable({
           'data': res.data.data.data,
           'columns': [
@@ -227,54 +240,41 @@ const showClients = async() => {
               data: '_id',
               visible: false,
             },
-            { data: 'companyName' },
             { data: 'customerNumber' },
+            { data: 'companyName' },
+            { data: 'address' },
+            { data: 'zip' },
+            { data: 'city' },
+            { data: 'country' },
             { data: 'email' },
+            { data: 'phone' },
+            { data: 'website' },
             {
               data: '_id',
               render: function(data) {
-                return '<button id="' + data + '" class="delete-button">Delete</button>' + ' ' + '<button id="' + data + '" class="edit-button">Edit</button>';
+                return '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>' + '   ' + '<a href="#" data-id="' + data + '" class="delete-button"><i class="fas fa-trash-alt"></i></a>';
               },
+              orderable: false,
             },
           ],
         });
     }
-    const deleteButtons = document.getElementsByClassName('delete-button');
-    const editButtons = document.getElementsByClassName('edit-button');
-    const deleteButtonPressed = e => {
-      deleteClient(e.target.id);
-    };
-
-    const editButtonPressed = e => {
-      location.assign(`/shipment/${e.target.id}`);
-    };
-
-    for (let button of deleteButtons) {
-      button.addEventListener('click', deleteButtonPressed);
-    }
-
-    for (let button of editButtons) {
-      button.addEventListener('click', editButtonPressed);
-    }
-
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
 };
 
-// const createClient = async(companyName, customerNumber, email) => {
-const createClient = async data => {
+const createCustomer = async data => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/clients',
+      url: 'http://localhost:3000/api/v1/customers',
       data,
     });
-    console.log(res.data.status);
     if (res.data.status === 'success') {
       showAlert('success', 'successfully created');
       window.setTimeout(() => {
-        location.assign('/clients');
+        location.assign('/customers');
       }, 1000);
     }
   } catch (err) {
@@ -282,36 +282,40 @@ const createClient = async data => {
   }
 };
 
-const updateClient = async data => {
+const deleteCustomer = async id => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: `http://localhost:3000/api/v1/customers/${id}`,
+    });
+    if (res.status === 204) {
+      showAlert('success', 'Customer successfully deleted.');
+      showCustomers();
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const updateCustomer = async(data, id) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:3000/api/v1/clients',
+      url: 'http://localhost:3000/api/v1/customers/' + id,
       data,
     });
-    console.log(res.data.status);
+
     if (res.data.status === 'success') {
-      showAlert('success', 'successfully created');
+      showAlert('success', 'Customer successfully updated');
       window.setTimeout(() => {
-        location.assign('/clients');
-      }, 1000);
+        location.assign('/customers');
+      }, 500);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
 };
 
-const deleteClient = async id => {
-  try {
-    await axios({
-      method: 'DELETE',
-      url: 'http://localhost:3000/api/v1/clients/' + id,
-    });
-    showClients();
-  } catch (err) {
-    showAlert('error', err.response.data.message);
-  }
-};
 
 // ---- ALERTS ----
 const hideAlert = () => {
@@ -333,12 +337,14 @@ const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
-const newClientDataForm = document.querySelector('.form-client-data');
-const clientDataForm = document.querySelector('.form-client-data');
-const clientsTable = document.querySelector('.clientsTable');
+
 const shipmentsTable = document.querySelector('.shipmentsTable');
 const shipmentDataForm = document.querySelector('.form-shipment-data');
-const newShipmentDataForm = document.querySelector('.form-new_shipment-data');
+const newShipmentDataForm = document.querySelector('.form-new-shipment-data');
+
+const customersTable = document.querySelector('.customersTable');
+const customerDataForm = document.querySelector('.form-customer-data');
+const newCustomerDataForm = document.querySelector('.form-new-customer-data');
 
 // DELEGATION
 if (loginForm) {
@@ -388,40 +394,6 @@ if (userPasswordForm) {
   });
 }
 
-if (newClientDataForm) {
-  newClientDataForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const companyName = document.getElementById('companyName').value;
-    const customerNumber = document.getElementById('customerNumber').value;
-    const email = document.getElementById('email').value;
-
-    createClient({
-      companyName,
-      customerNumber,
-      email,
-    });
-  });
-}
-
-if (clientDataForm) {
-  newClientDataForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const companyName = document.getElementById('companyName').value;
-    const customerNumber = document.getElementById('customerNumber').value;
-    const email = document.getElementById('email').value;
-
-    createClient({
-      companyName,
-      customerNumber,
-      email,
-    });
-  });
-}
-
-if (clientsTable) {
-  showClients();
-}
-
 if (shipmentsTable) {
   showShipments();
 }
@@ -430,7 +402,7 @@ if (newShipmentDataForm) {
   newShipmentDataForm.addEventListener('submit', e => {
     e.preventDefault();
     const select = document.getElementById('companyName');
-    const client = select.value;
+    const customer = select.value;
     const shipmentDate = document.getElementById('date').value;
     const amount = document.getElementById('amount').value;
     const inStock = document.getElementById('inStock').checked;
@@ -441,7 +413,7 @@ if (newShipmentDataForm) {
 
     createShipment({
       shipmentDate,
-      client,
+      customer,
       amount,
       inStock,
       deliveryNote,
@@ -457,7 +429,7 @@ if (shipmentDataForm) {
     e.preventDefault();
     const id = document.getElementById('shipmentId').value;
     const select = document.getElementById('companyName');
-    const client = select.value;
+    const customer = select.value;
     const shipmentDate = document.getElementById('shipmentDate').value;
     const amount = document.getElementById('amount').value;
     const inStock = document.getElementById('inStock').checked;
@@ -467,7 +439,7 @@ if (shipmentDataForm) {
 
     updateShipment({
       shipmentDate,
-      client,
+      customer,
       amount,
       inStock,
       deliveryNote,
@@ -476,6 +448,67 @@ if (shipmentDataForm) {
     }, id);
   });
 }
+
+if (customersTable) {
+  showCustomers();
+}
+
+if (newCustomerDataForm) {
+  newCustomerDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const customerNumber = document.getElementById('customerNumber').value;
+    const companyName = document.getElementById('companyName').value;
+    const address = document.getElementById('address').value;
+    const zip = document.getElementById('zip').value;
+    const city = document.getElementById('city').value;
+    const country = document.getElementById('country').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const website = document.getElementById('website').value;
+
+    createCustomer({
+      customerNumber,
+      companyName,
+      address,
+      zip,
+      city,
+      country,
+      email,
+      phone,
+      website,
+    });
+  });
+}
+
+if (customerDataForm) {
+  customerDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const id = document.getElementById('customerId').value;
+    const customerNumber = document.getElementById('customerNumber').value;
+    const companyName = document.getElementById('companyName').value;
+    const address = document.getElementById('address').value;
+    const zip = document.getElementById('zip').value;
+    const city = document.getElementById('city').value;
+    const country = document.getElementById('country').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const website = document.getElementById('website').value;
+
+    updateCustomer({
+      customerNumber,
+      companyName,
+      address,
+      zip,
+      city,
+      country,
+      email,
+      phone,
+      website,
+    }, id);
+  });
+}
+
+
 
 
 

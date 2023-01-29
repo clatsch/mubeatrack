@@ -6,11 +6,11 @@
             <h2 class="heading-secondary ma-bt-md">Edit Shipment</h2>
             <form class="form form-shipment-data">
                 <input type="hidden" id="shipmentId" value="<%= shipment.id; %>">
-                <div class="form__group ma-bt-md"><label class="form__label" for="client">Client</label>
+                <div class="form__group ma-bt-md"><label class="form__label" for="customer">Customer</label>
                     <select class="form__input" id="companyName">
-                        <% clients.forEach((client) => { %>
-                            <% let isSelected = (client.companyName === shipment.client.companyName) %>
-                            <option value="<%= client._id %>" <%= (isSelected) ? "selected" : "" %>><%= client.companyName %></option>
+                        <% customers.forEach((customer) => { %>
+                            <% let isSelected = (customer.companyName === shipment.customer.companyName) %>
+                            <option value="<%= customer._id %>" <%= (isSelected) ? "selected" : "" %>><%= customer.companyName %></option>
                         <% }); %>
                     </select>
                 </div>

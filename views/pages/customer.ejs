@@ -1,0 +1,44 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <div class="user-view__content">
+        <div class="user-view__form-container">
+            <h2 class="heading-secondary ma-bt-md">Edit Customer</h2>
+            <form class="form form-customer-data">
+                <input type="hidden" id="customerId" value="<%= customer.id; %>">
+
+
+                <div class="form__group"><label class="form__label" for="customerNumber">Customer Number</label><input
+                            class="form__input" id="customerNumber" type="text" value="<%= customer.customerNumber; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="companyName">Company Name</label><input
+                            class="form__input" id="companyName" type="text" value="<%= customer.companyName; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="address">Address</label><input
+                            class="form__input" id="address" type="text" value="<%= customer.address; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="zip">ZIP</label><input
+                            class="form__input" id="zip" type="text" value="<%= customer.zip; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="city">City</label><input
+                            class="form__input" id="city" type="text" value="<%= customer.city; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="country">Country</label><input
+                            class="form__input" id="country" type="text" value="<%= customer.country; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="email">Email address</label><input
+                            class="form__input" id="email" type="email" value="<%= customer.email; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="phone">Phone</label><input
+                            class="form__input" id="phone" type="text" value="<%= customer.phone; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="website">Website</label><input
+                            class="form__input" id="website" type="text" value="<%= customer.customerNumber; %>"/></div>
+
+                <button class="btn btn--small btn--green">Save Customer</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('_footer') -%>

@@ -32,10 +32,10 @@ const shipmentSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  client: {
+  customer: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Client',
-    required: [true, 'Shipment must belong to a client'],
+    ref: 'Customer',
+    required: [true, 'Shipment must belong to a customer'],
   },
   user: {
     type: mongoose.Schema.ObjectId,
@@ -46,7 +46,7 @@ const shipmentSchema = new mongoose.Schema({
 
 shipmentSchema.pre(/^find/, function(next) {
   this.populate({
-    path: 'client',
+    path: 'customer',
     select: 'companyName',
   }).populate({
     path: 'user',

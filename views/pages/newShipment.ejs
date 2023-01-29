@@ -4,17 +4,17 @@
     <div class="user-view__content">
         <div class="user-view__form-container">
             <h2 class="heading-secondary ma-bt-md">New shipment</h2>
-            <form class="form form-new_shipment-data">
+            <form class="form form-new-shipment-data">
                 <div class="form__group">
                     <label class="form__label" for="date">Date</label>
                     <input class="form__input" id="date" type="date"/>
                 </div>
 
                 <div class="form__group ma-bt-md">
-                    <label class="form__label" for="client">Company Name</label>
+                    <label class="form__label" for="customer">Company Name</label>
                     <select class="form__input" id="companyName">
-                        <% for (let i = 0; i < clients.length; i++) { %>
-                            <option value="<%= clients[i]._id ;%>"><%= clients[i].companyName ;%></option>
+                        <% for (let i = 0; i < customers.length; i++) { %>
+                            <option value="<%= customers[i]._id ;%>"><%= customers[i].companyName ;%></option>
                         <% } %>
                     </select>
                 </div>

@@ -1,0 +1,43 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <div class="user-view__content">
+        <div class="user-view__form-container">
+            <h2 class="heading-secondary ma-bt-md">Create new Customer</h2>
+            <form class="form form-new-customer-data">
+                <div class="form__group ma-bt-md"><label class="form__label" for="customerNumber">Customer Number</label><input
+                            class="form__input" id="customerNumber" type="number"/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="companyName">Company Name</label><input
+                            class="form__input" id="companyName" type="text"/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="address">Address</label><input
+                            class="form__input" id="address" type="text"/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="zip">ZIP</label><input
+                            class="form__input" id="zip" type="number"/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="city">City</label><input
+                            class="form__input" id="city" type="text"/></div>
+
+                <div class="form__group"><label class="form__label" for="country">Country</label><input
+                            class="form__input" id="country" type="text"/></div>
+
+                <div class="form__group ma-bt-md"><label class="form__label" for="email">Email address</label><input
+                            class="form__input" id="email" type="email"/></div>
+
+                <div class="form__group"><label class="form__label" for="phone">Phone</label><input
+                            class="form__input" id="phone" type="text"/></div>
+
+                <div class="form__group"><label class="form__label" for="website">Website</label><input
+                            class="form__input" id="website" type="text"/></div>
+
+
+
+                <button class="btn btn--small btn--green">Create Customer</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('_footer') -%>

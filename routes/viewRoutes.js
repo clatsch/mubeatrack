@@ -9,9 +9,9 @@ router.get('/', authController.isLoggedIn, viewsController.getLoginForm)
 router.get('/shipments', authController.protect, viewsController.getShipments );
 router.get('/shipment/:id', authController.protect, viewsController.getShipment);
 router.get('/newShipment', authController.protect, viewsController.getNewShipment);
-router.get('/clients', authController.protect, viewsController.getClients)
-router.get('/newClient', authController.protect, viewsController.getNewClient)
-router.get('/client/:id', authController.protect, viewsController.getClient);
+router.get('/customers', authController.protect, viewsController.getCustomers)
+router.get('/customer/:id', authController.protect, viewsController.getCustomer);
+router.get('/newCustomer', authController.protect, viewsController.getNewCustomer)
 router.get('/me', authController.protect, viewsController.getAccount);
 
 

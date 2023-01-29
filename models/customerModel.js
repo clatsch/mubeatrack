@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 //const validator = require('validator');
 
-const clientSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
     companyName: {
       type: String,
     },
@@ -41,11 +41,11 @@ const clientSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    //required: [true, 'Client must belong to a user'],
+    //required: [true, 'Customer must belong to a user'],
   },
 // });
 //
-// clientSchema.pre(/^find/, function(next) {
+// customerSchema.pre(/^find/, function(next) {
 //   this.populate({
 //     path: 'user',
 //     select: 'name employeeNumber',
@@ -54,6 +54,6 @@ const clientSchema = new mongoose.Schema({
   },
 );
 
-const Client = mongoose.model('Client', clientSchema);
+const Customer = mongoose.model('Customer', customerSchema);
 
-module.exports = Client;
+module.exports = Customer;
