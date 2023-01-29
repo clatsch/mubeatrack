@@ -1,9 +1,11 @@
+
+const apiUrl = 'http://localhost:3000/api/v1';
 // ---- ACCOUNT ----
 const login = async(email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/users/login',
+      url: `${apiUrl}/users/login`,
       data: {
         email,
         password,
@@ -25,7 +27,7 @@ const forgotPassword = async email => {
   try {
       const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/users/forgotpassword',
+      url: `${apiUrl}/users/forgotpassword`,
       data: {
         email,
       },
@@ -49,7 +51,7 @@ const resetPassword = async(password, passwordConfirm) => {
   try {
       const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:3000/api/v1/users/resetPassword/' + token,
+      url: `${apiUrl}/users/resetPassword/`+ token,
       data: {
         password,
         passwordConfirm,
@@ -71,7 +73,7 @@ const signup = async(employeeNumber, name, email, role, password, passwordConfir
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/users/signup',
+      url: `${apiUrl}/users/signup`,
       data: {
         employeeNumber,
         name,
@@ -97,7 +99,7 @@ const logout = async() => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/v1/users/logout',
+      url: `${apiUrl}/users/logout`,
     });
     if (res.data.status === 'success') {
       window.setTimeout(() => {
@@ -112,7 +114,7 @@ const logout = async() => {
 // Type is either 'password' or 'data
 const updateSettings = async(data, type) => {
   try {
-    const url = type === 'password' ? 'http://localhost:3000/api/v1/users/updateMyPassword' : 'http://localhost:3000/api/v1/users/updateMe';
+    const url = type === 'password' ? '0.0.0.0:3000/api/v1/users/updateMyPassword' : '0.0.0.0:3000/api/v1/users/updateMe';
 
     const res = await axios({
       method: 'PATCH',
@@ -133,7 +135,7 @@ const showShipments = async() => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/v1/shipments',
+      url: `${apiUrl}/shipments`,
     });
 
     if (res.data.status === 'success') {
@@ -229,7 +231,7 @@ const createShipment = async data => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/shipments',
+      url: `${apiUrl}/shipments`,
       data,
     });
     if (res.data.status === 'success') {
@@ -247,7 +249,7 @@ const deleteShipment = async id => {
   try {
     const res = await axios({
       method: 'DELETE',
-      url: `http://localhost:3000/api/v1/shipments/${id}`,
+      url: `${apiUrl}/shipments/${id}`,
     });
     if (res.status === 204) {
       showAlert('success', 'Shipment successfully deleted.');
@@ -262,7 +264,7 @@ const updateShipment = async(data, id) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:3000/api/v1/shipments/' + id,
+      url: `${apiUrl}/shipments/` + id,
       data,
     });
 
@@ -283,7 +285,7 @@ const showCustomers = async() => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/v1/customers',
+      url: `${apiUrl}/customers`,
     });
 
     if (res.data.status === 'success') {
@@ -340,7 +342,7 @@ const createCustomer = async data => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3000/api/v1/customers',
+      url: `${apiUrl}/customers`,
       data,
     });
     if (res.data.status === 'success') {
@@ -358,7 +360,7 @@ const deleteCustomer = async id => {
   try {
     const res = await axios({
       method: 'DELETE',
-      url: `http://localhost:3000/api/v1/customers/${id}`,
+      url: `${apiUrl}/customers/${id}`,
     });
     if (res.status === 204) {
       showAlert('success', 'Customer successfully deleted.');
@@ -373,7 +375,7 @@ const updateCustomer = async(data, id) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:3000/api/v1/customers/' + id,
+      url: `${apiUrl}/customers/` + id,
       data,
     });
 
@@ -394,7 +396,7 @@ const showUsers = async() => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/v1/users',
+      url: `${apiUrl}/users`,
     });
 
     if (res.data.status === 'success') {
@@ -446,7 +448,7 @@ const deleteUser = async id => {
   try {
     const res = await axios({
       method: 'DELETE',
-      url: `http://localhost:3000/api/v1/users/${id}`,
+      url: `${apiUrl}/users/${id}`,
     });
     if (res.status === 204) {
       showAlert('success', 'User successfully deleted.');
@@ -461,7 +463,7 @@ const updateUser = async(data, id) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:3000/api/v1/users/' + id,
+      url: `${apiUrl}/users/` + id,
       data,
     });
 
