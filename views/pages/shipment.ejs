@@ -4,28 +4,43 @@
     <div class="user-view__content">
         <div class="user-view__form-container">
             <h2 class="heading-secondary ma-bt-md">Edit Shipment</h2>
-            <form class="form form-client-data">
-                <div class="form__group ma-bt-md"><label class="form__label" for="client">Client</label><input
-                            class="form__input" id="client" type="text" value="<%= shipment.client.companyName; %>"/>
+            <form class="form form-shipment-data">
+                <input type="hidden" id="shipmentId" value="<%= shipment.id; %>">
+                <div class="form__group ma-bt-md"><label class="form__label" for="client">Client</label>
+                    <select class="form__input" id="companyName">
+                        <% clients.forEach((client) => { %>
+                            <% let isSelected = (client.companyName === shipment.client.companyName) %>
+                            <option value="<%= client._id %>" <%= (isSelected) ? "selected" : "" %>><%= client.companyName %></option>
+                        <% }); %>
+                    </select>
                 </div>
 
-                <div class="form__group ma-bt-md"><label class="form__label" for="shipmentDate">Shipment
-                        Date</label><input
-                            class="form__input" id="shipmentDate" type="text" value="<%= shipment.shipmentDate; %>"/>
+
+
+                <div class="form__group ma-bt-md">
+                    <label class="form__label" for="shipmentDate">Shipment Date</label>
+                    <input class="form__input" id="shipmentDate" type="date" value="<%= shipment.shipmentDate.toISOString().substring(0, 10); %>"/>
                 </div>
 
-                <div class="form__group"><label class="form__label" for="customerNumber">Amount</label><input
-                            class="form__input" id="customerNumber" type="text" value="<%= shipment.amount; %>"/></div>
 
-                <div class="form__group ma-bt-md"><label class="form__label" for="inStock">in Stock</label><input
-                            class="form__input" id="email" type="checkbox" value="<%= shipment.inStock; %>" <%= shipment.inStock ? 'checked' : '' %>/></div>
 
-                <div class="form__group ma-bt-md"><label class="form__label" for="deliveryNote">Delivery Note</label>
-                    <input class="form__input" id="deliveryNote" type="checkbox" <%= shipment.deliveryNote ? 'checked' : '' %>/>
+                <div class="form__group"><label class="form__label" for="amount">Amount</label><input
+                            class="form__input" id="amount" type="text" value="<%= shipment.amount; %>"/></div>
+
+                <div class="form__group ma-bt-md">
+                    <label class="form__label" for="inStock">in Stock</label>
+                    <input class="form__input" id="inStock" type="checkbox" value="<%= shipment.inStock; %>" <%= shipment.inStock ? 'checked' : '' %>/>
                 </div>
 
-                <div class="form__group ma-bt-md"><label class="form__label" for="rk">RK</label><input
-                            class="form__input" id="rk" type="checkbox" value="<%= shipment.rk; %>" <%= shipment.rk ? 'checked' : '' %>/></div>
+
+                <div class="form__group ma-bt-md">
+                    <label class="form__label" for="deliveryNote">Delivery Note</label>
+                    <input class="form__input" id="deliveryNote" type="checkbox" value="<%= shipment.deliveryNote; %>" <%= shipment.deliveryNote ? 'checked' : '' %>/>
+                </div>
+
+                <div class="form__group ma-bt-md">
+                    <label class="form__label" for="rk">RK</label>
+                    <input class="form__input" id="rk" type="checkbox" value="<%= shipment.rk; %>" <%= shipment.rk ? 'checked' : '' %>/>
 
                 <div class="form__group ma-bt-md"><label class="form__label" for="comment">Comment</label><input
                             class="form__input" id="comment" type="text" value="<%= shipment.comment; %>"/></div>

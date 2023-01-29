@@ -65,7 +65,7 @@ const showShipments = async() => {
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'success');
+      // showAlert('success', 'success');
       $('#shipmentsTable')
         .DataTable()
         .destroy();
@@ -95,7 +95,8 @@ const showShipments = async() => {
               render: function(data) {
                 let date = new Date(data);
                 let month = date.getMonth() + 1;
-                return (date.getDate().toString().length < 2 ? '0' : '') + date.getDate() + '.' + (month.toString().length > 1 ? month : '0' + month) + '.' + date.getFullYear();
+                return (date.getDate()
+                  .toString().length < 2 ? '0' : '') + date.getDate() + '.' + (month.toString().length > 1 ? month : '0' + month) + '.' + date.getFullYear();
               },
             },
             { data: 'client.companyName' },
@@ -154,8 +155,6 @@ const showShipments = async() => {
 
 const createShipment = async data => {
   try {
-    // Get the id of the currently logged in user
-
     const res = await axios({
       method: 'POST',
       url: 'http://localhost:3000/api/v1/shipments',
@@ -178,9 +177,28 @@ const deleteShipment = async id => {
       method: 'DELETE',
       url: `http://localhost:3000/api/v1/shipments/${id}`,
     });
-    if (res.data.status === 'success') {
+    if (res.status === 204) {
       showAlert('success', 'Shipment successfully deleted.');
       showShipments();
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const updateShipment = async(data, id) => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: 'http://localhost:3000/api/v1/shipments/' + id,
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Shipment successfully updated');
+      window.setTimeout(() => {
+        location.assign('/shipments');
+      }, 500);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
@@ -264,7 +282,7 @@ const createClient = async data => {
   }
 };
 
-const editClient = async data => {
+const updateClient = async data => {
   try {
     const res = await axios({
       method: 'PATCH',
@@ -319,7 +337,8 @@ const newClientDataForm = document.querySelector('.form-client-data');
 const clientDataForm = document.querySelector('.form-client-data');
 const clientsTable = document.querySelector('.clientsTable');
 const shipmentsTable = document.querySelector('.shipmentsTable');
-const newShipmentDataForm = document.querySelector('.form-shipment-data');
+const shipmentDataForm = document.querySelector('.form-shipment-data');
+const newShipmentDataForm = document.querySelector('.form-new_shipment-data');
 
 // DELEGATION
 if (loginForm) {
@@ -430,6 +449,31 @@ if (newShipmentDataForm) {
       comment,
       user,
     });
+  });
+}
+
+if (shipmentDataForm) {
+  shipmentDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const id = document.getElementById('shipmentId').value;
+    const select = document.getElementById('companyName');
+    const client = select.value;
+    const shipmentDate = document.getElementById('shipmentDate').value;
+    const amount = document.getElementById('amount').value;
+    const inStock = document.getElementById('inStock').checked;
+    const deliveryNote = document.getElementById('deliveryNote').checked;
+    const rk = document.getElementById('rk').checked;
+    const comment = document.getElementById('comment').value;
+
+    updateShipment({
+      shipmentDate,
+      client,
+      amount,
+      inStock,
+      deliveryNote,
+      rk,
+      comment,
+    }, id);
   });
 }
 
