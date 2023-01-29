@@ -19,11 +19,11 @@ router.route('/monthly-plan/:year')
 
 router.route('/')
   .get(shipmentController.getAllShipments)
-  .post(authController.restrictsTo('admin', 'editor'), shipmentController.createShipment);
+  .post(authController.restrictsTo('admin', 'user'), shipmentController.createShipment);
 
 router.route('/:id')
   .get(shipmentController.getShipment)
-  .patch(authController.restrictsTo('admin', 'editor'), shipmentController.updateShipment)
-  .delete(authController.restrictsTo('admin', 'editor'), shipmentController.deleteShipment);
+  .patch(authController.restrictsTo('admin', 'user'), shipmentController.updateShipment)
+  .delete(authController.restrictsTo('admin', 'user'), shipmentController.deleteShipment);
 
 module.exports = router;
