@@ -34,15 +34,20 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async(req, res, next) => {
-  const newUser = await User.create({
+  await User.create({
     employeeNumber: req.body.employeeNumber,
     name: req.body.name,
     email: req.body.email,
+    role: req.body.role,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
   });
-  createSendToken(newUser, 201, res);
+
+  res.status(200)
+    .json({ status: 'success' });
+
+  // createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async(req, res, next) => {

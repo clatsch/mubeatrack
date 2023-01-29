@@ -21,6 +21,32 @@ const login = async(email, password) => {
   }
 };
 
+const signup = async(employeeNumber, name, email, role, password, passwordConfirm) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: 'http://localhost:3000/api/v1/users/signup',
+      data: {
+        employeeNumber,
+        name,
+        email,
+        role,
+        password,
+        passwordConfirm,
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'User signed up successfully');
+      window.setTimeout(() => {
+        location.assign('/users');
+      }, 1200);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 const logout = async() => {
   try {
     const res = await axios({
@@ -316,6 +342,94 @@ const updateCustomer = async(data, id) => {
   }
 };
 
+// ---- USERS ----
+
+const showUsers = async() => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://localhost:3000/api/v1/users',
+    });
+
+    if (res.data.status === 'success') {
+      // showAlert('success', 'success');
+      $('#usersTable')
+        .DataTable()
+        .destroy();
+      $('#usersTable')
+        .on('click', '.delete-button', function() {
+          const id = $(this)
+            .attr('data-id');
+          deleteUser(id);
+        });
+      $('#usersTable')
+        .on('click', '.edit-button', function() {
+          const id = $(this)
+            .attr('id');
+          location.assign(`/user/${id}`);
+        });
+
+      $('#usersTable')
+        .DataTable({
+          'data': res.data.data.data,
+          'columns': [
+            {
+              data: '_id',
+              visible: false,
+            },
+            { data: 'employeeNumber' },
+            { data: 'name' },
+            { data: 'email' },
+            { data: 'role' },
+            {
+              data: '_id',
+              render: function(data) {
+                return '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>' + '   ' + '<a href="#" data-id="' + data + '" class="delete-button"><i class="fas fa-trash-alt"></i></a>';
+              },
+              orderable: false,
+            },
+          ],
+        });
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const deleteUser = async id => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: `http://localhost:3000/api/v1/users/${id}`,
+    });
+    if (res.status === 204) {
+      showAlert('success', 'User successfully deleted.');
+      showUsers();
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const updateUser = async(data, id) => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: 'http://localhost:3000/api/v1/users/' + id,
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'User successfully updated');
+      window.setTimeout(() => {
+        location.assign('/users');
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 
 // ---- ALERTS ----
 const hideAlert = () => {
@@ -335,7 +449,8 @@ const showAlert = (type, msg) => {
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
-const userDataForm = document.querySelector('.form-user-data');
+
+const currentUserDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 
 const shipmentsTable = document.querySelector('.shipmentsTable');
@@ -345,6 +460,11 @@ const newShipmentDataForm = document.querySelector('.form-new-shipment-data');
 const customersTable = document.querySelector('.customersTable');
 const customerDataForm = document.querySelector('.form-customer-data');
 const newCustomerDataForm = document.querySelector('.form-new-customer-data');
+
+const signupForm = document.querySelector('.form-new-user-data');
+const usersTable = document.querySelector('.usersTable');
+const userDataForm = document.querySelector('.form-worker-data');
+
 
 // DELEGATION
 if (loginForm) {
@@ -356,10 +476,30 @@ if (loginForm) {
   });
 }
 
+if (signupForm) {
+  signupForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const employeeNumber = document.getElementById('employeeNumber').value;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const select = document.getElementById('role')
+    const role = select.value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    signup(
+      employeeNumber,
+      name,
+      email,
+      role,
+      password,
+      passwordConfirm);
+  });
+}
+
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
-if (userDataForm) {
-  userDataForm.addEventListener('submit', e => {
+if (currentUserDataForm) {
+  currentUserDataForm.addEventListener('submit', e => {
     e.preventDefault();
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
@@ -504,6 +644,30 @@ if (customerDataForm) {
       email,
       phone,
       website,
+    }, id);
+  });
+}
+
+if (usersTable) {
+  showUsers();
+}
+
+if (userDataForm) {
+  userDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const id = document.getElementById('userId').value;
+    const employeeNumber = document.getElementById('employeeNumber').value;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const select = document.getElementById('role');
+    const role = select.value;
+
+
+    updateUser({
+      employeeNumber,
+      name,
+      email,
+      role,
     }, id);
   });
 }

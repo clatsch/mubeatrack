@@ -13,6 +13,9 @@ router.get('/customers', authController.protect, viewsController.getCustomers)
 router.get('/customer/:id', authController.protect, viewsController.getCustomer);
 router.get('/newCustomer', authController.protect, viewsController.getNewCustomer)
 router.get('/me', authController.protect, viewsController.getAccount);
+router.get('/users', authController.protect, authController.restrictsTo('admin'), viewsController.getUsers)
+router.get('/user/:id', authController.protect, authController.restrictsTo('admin'), viewsController.getUser)
+router.get('/users/signup', authController.protect, authController.restrictsTo('admin'), viewsController.getSignupForm)
 
 
 module.exports = router;

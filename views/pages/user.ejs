@@ -1,0 +1,36 @@
+<%- include('_header') -%>
+
+<main class="main">
+    <div class="user-view__content">
+        <div class="user-view__form-container">
+            <h2 class="heading-secondary ma-bt-md">Edit User</h2>
+            <form class="form form-worker-data">
+                <input type="hidden" id="userId" value="<%= user.id; %>">
+
+
+                <div class="form__group"><label class="form__label" for="employeeNumber">Employee Number</label><input
+                            class="form__input" id="employeeNumber" type="text" value="<%= user.employeeNumber; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="name">Name</label><input
+                            class="form__input" id="name" type="text" value="<%= user.name; %>"/></div>
+
+                <div class="form__group"><label class="form__label" for="email">E-Mail</label><input
+                            class="form__input" id="email" type="email" value="<%= user.email; %>"/></div>
+
+                <div class="form__group">
+                    <label class="form__label" for="role">Role</label>
+                    <select class="form__input" id="role">
+                        <option value="admin" <%= (user.role === 'admin') ? 'selected' : '' %>>Admin</option>
+                        <option value="user" <%= (user.role === 'user') ? 'selected' : '' %>>User</option>
+                    </select>
+                </div>
+
+
+
+                <button class="btn btn--small btn--green">Save Customer</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('_footer') -%>

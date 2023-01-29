@@ -1,5 +1,6 @@
 const Shipment = require('../models/shipmentModel');
 const Customer = require('../models/customerModel');
+const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -50,6 +51,13 @@ exports.getLoginForm = (req, res) => {
     });
 };
 
+exports.getSignupForm = (req, res) => {
+  res.status(200)
+    .render('signup', {
+      title: 'Sign up for a new account',
+    });
+};
+
 exports.getAccount = (req, res) => {
   res.status(200)
     .render('account', {
@@ -69,7 +77,6 @@ exports.getCustomers = catchAsync(async(req, res, next) => {
 exports.getCustomer = catchAsync(async(req, res, next) => {
   // 1) Get the data, for the requested shipment
   const customer = await Customer.findOne({ _id: req.params.id  });
-
   if (!customer) {
     return next(new AppError('There is no Customer with that ID.', 404));
   }
@@ -87,5 +94,34 @@ exports.getNewCustomer = (req, res) => {
       title: 'Create new customer',
     });
 };
+
+exports.getUsers = catchAsync(async(req, res, next) => {
+  // 1) Get shipments data from collection
+  const users = await User.find();
+  // 2) Build template
+
+  // 3) Render that template using data from 1)
+  res.status(200)
+    .render('users', {
+      title: 'All Users',
+      users,
+    });
+});
+
+exports.getUser = catchAsync(async(req, res, next) => {
+  // 1) Get the data, for the requested shipment
+  const user = await User.findOne({ _id: req.params.id  });
+
+  console.log(user);
+  if (!user) {
+    return next(new AppError('There is no User with that ID.', 404));
+  }
+
+  res.status(200)
+    .render('user', {
+      title: 'User',
+      user,
+    });
+});
 
 
