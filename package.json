@@ -4,7 +4,7 @@
   "description": "Shipment tracking for Mubea",
   "main": "app.js",
   "scripts": {
-    "test_CI": "mocha ./tests/testMocha.js mocha --timeout 10000 --exit",
+    "test_CI": "mocha -- ./tests/test.js -- mocha --timeout 10000 --exit",
     "test_selenium": "mocha ./tests/selenium.js",
     "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
