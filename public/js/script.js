@@ -1,4 +1,6 @@
 
+// const process = require("process");
+// const apiUrl = process.env.API_URL;
 const apiUrl = 'http://localhost:3000/api/v1';
 // ---- ACCOUNT ----
 const login = async(email, password) => {
