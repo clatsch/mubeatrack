@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test_CI": "mocha ./tests/testMocha.js mocha --timeout 10000 --exit",
-    "test_selenium": "mocha ./tests/selenium.mjs",
+    "test_selenium": "mocha ./tests/selenium.js",
     "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
     "debug": "ndb server.js"
@@ -15,6 +15,7 @@
   "dependencies": {
     "axios": "^1.2.2",
     "bcryptjs": "^2.4.3",
+    "chromedriver": "^109.0.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
@@ -30,10 +31,11 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
-    "selenium-webdriver": "^4.7.1",
+    "selenium-webdriver": "^4.8.0",
     "sharp": "^0.31.3",
     "slugify": "^1.6.5",
     "validator": "^13.7.0",
+    "webdriver": "^8.3.2",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
