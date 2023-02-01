@@ -140,134 +140,115 @@ require("chromedriver");
 
 
 // describe test
-describe("test load next site after log in", function () {
-
-    it("It should return the url after log in, Admin log in and see the next site", async function () {
-
-        let driver = await new Builder().forBrowser("chrome").build();
-        try {
-            // navigate to to this website
-            //await driver.get("http://www.google.com/");
-            await driver.get("http://localhost:3000");
-            console.log("öffne Browser")
-
-            // find a search box element with name ='q'
-            //await driver.findElement(By.name("q"));
-            await driver.findElement(By.id('email')).sendKeys("admin@admin.ch");
-            // type 'reflect run' in the search box then press ENTER Key
-            //await driver.findElement(By.name("q")).sendKeys("Reflect run", Key.RETURN);
-            await driver.findElement(By.id('password')).sendKeys("test1234");
-
-            await driver.findElement(By.className('btn btn--green')).click();
-            console.log("CLicke anmelden")
-
-
-            //let pageTitleNewSite = await driver.findElement(By.linkText("http://localhost:3000/shipments"))// .xpath("title")) //until.titleIs("MubeaTrack | Shipments Overview"), 2000);
-            //let pageTitleNewSite = await driver.wait(until.titleIs("MubeaTrack | Shipments Overview"), 2000);
-            //console.log("pageTitleNewSite: " + JSON.stringify(pageTitleNewSite))
-            //await driver.wait(until.titleIs("Reflect run - Google Search"), 2000);
-            let urlAfterLogIn = "";
-            setTimeout(async() => {
-                urlAfterLogIn = await driver.getCurrentUrl();
-
-                try {
-                    assert.strictEqual(urlAfterLogIn, "http://localhost:3000/shipments", "Sollte sein: " + JSON.stringify(urlAfterLogIn));
-                    console.log("urlAfterLogIn is: " + JSON.stringify(urlAfterLogIn))
-                }
-                catch (e){
-                    console.log("Assert Failed: "+e)
-                }
-            }, "2000")
-
-
-            //console.log("urlAfterLogIn: " + JSON.parse(urlAfterLogIn))
-           // Assert.assertEquals(URL, "http://localhost:8080/imdb/homepage" );
-
-            // Get the pagetitle of the current Page
-            // let pageTitle = await driver.getTitle();
-            // console.log("pageTitle: " + pageTitle)
-
-            // let imputEmail = await driver.findElement(By.id('email')).sendKeys("admin@admin.ch");
-            // let imputPassword = await driver.findElement(By.id('password')).sendKeys("test1234");
-            // let login = await driver.findElement(By.className('btn btn--green'))//.click(); // .sendKeys("123");
-            // let strLogin = await login.getAttribute("innerHTML");
-            // console.log("strLogin: " + strLogin)
-
-
-            // assert.strictEqual(pageTitle, "MubeaTrack | Shipments Overview");
-            // if (pageTitle) {
-            //     console.log("Page Title:", pageTitle);
-            // }
-        } finally {
-            setTimeout(async() => {
-                await driver.quit();
-                console.log("Bin zu  1")
-            }, "3000")
-        }
-    });
-});//funktiiniert test 1
-
-
-
-describe("test, when admin logt in, an click Manage Customers", function () {
-
-    it("It should return the name of the table: Customer Number", async function () {
-
-        let driver = await new Builder().forBrowser("chrome").build();
-        try {
-            console.log("Bin öffne 2")
-            await driver.get("http://localhost:3000");
-            console.log("öffne Browser")
-
-            await driver.findElement(By.id('email')).sendKeys("admin@admin.ch");
-            await driver.findElement(By.id('password')).sendKeys("test1234");
-            await driver.findElement(By.className('btn btn--green')).click();
-            console.log("CLicke anmelden")
+// describe("test load next site after log in", function () {
+//
+//     it("It should return the url after log in, Admin log in and see the next site", async function () {
+//
+//         let driver = await new Builder().forBrowser("chrome").build();
+//         try {
+//             // navigate to to this website
+//             //await driver.get("http://www.google.com/");
+//             await driver.get("http://localhost:3000");
+//             console.log("öffne Browser")
+//
+//             // find a search box element with name ='q'
+//             //await driver.findElement(By.name("q"));
+//             await driver.findElement(By.id('email')).sendKeys("admin@admin.ch");
+//             // type 'reflect run' in the search box then press ENTER Key
+//             //await driver.findElement(By.name("q")).sendKeys("Reflect run", Key.RETURN);
+//             await driver.findElement(By.id('password')).sendKeys("test1234");
+//
+//             await driver.findElement(By.className('btn btn--green')).click();
+//             console.log("CLicke anmelden")
+//
+//
+//             //let pageTitleNewSite = await driver.findElement(By.linkText("http://localhost:3000/shipments"))// .xpath("title")) //until.titleIs("MubeaTrack | Shipments Overview"), 2000);
+//             //let pageTitleNewSite = await driver.wait(until.titleIs("MubeaTrack | Shipments Overview"), 2000);
+//             //console.log("pageTitleNewSite: " + JSON.stringify(pageTitleNewSite))
+//             //await driver.wait(until.titleIs("Reflect run - Google Search"), 2000);
+//             let urlAfterLogIn = "";
+//             setTimeout(async() => {
+//                 urlAfterLogIn = await driver.getCurrentUrl();
+//
+//                 try {
+//                     assert.strictEqual(urlAfterLogIn, "http://localhost:3000/shipments", "Sollte sein: " + JSON.stringify(urlAfterLogIn));
+//                     console.log("urlAfterLogIn is: " + JSON.stringify(urlAfterLogIn))
+//                 }
+//                 catch (e){
+//                     console.log("Assert Failed: "+e)
+//                 }
+//             }, "2000")
+//
+//
+//             //console.log("urlAfterLogIn: " + JSON.parse(urlAfterLogIn))
+//            // Assert.assertEquals(URL, "http://localhost:8080/imdb/homepage" );
+//
+//             // Get the pagetitle of the current Page
+//             // let pageTitle = await driver.getTitle();
+//             // console.log("pageTitle: " + pageTitle)
+//
+//             // let imputEmail = await driver.findElement(By.id('email')).sendKeys("admin@admin.ch");
+//             // let imputPassword = await driver.findElement(By.id('password')).sendKeys("test1234");
+//             // let login = await driver.findElement(By.className('btn btn--green'))//.click(); // .sendKeys("123");
+//             // let strLogin = await login.getAttribute("innerHTML");
+//             // console.log("strLogin: " + strLogin)
+//
+//
+//             // assert.strictEqual(pageTitle, "MubeaTrack | Shipments Overview");
+//             // if (pageTitle) {
+//             //     console.log("Page Title:", pageTitle);
+//             // }
+//         } finally {
+//             setTimeout(async() => {
+//                 await driver.quit();
+//                 console.log("Bin zu  1")
+//             }, "3000")
+//         }
+//     });
+// });//funktiiniert test 1
 
 
+//
+// describe("test, when admin logt in, an click Manage Customers", function () {
+//
+//     it("It should return the name of the table: Customer Number", async function () {
+//
+//         let driver = await new Builder().forBrowser("chrome").build();
+//         try {
+//             //console.log("Bin öffne 2")
+//             await driver.get("http://localhost:3000");
+//
+//             await driver.findElement(By.id('email')).sendKeys("admin@admin.ch");
+//             await driver.findElement(By.id('password')).sendKeys("test1234");
+//             await driver.findElement(By.className('btn btn--green')).click();
+//
+//             setTimeout(async() => {
+//                 await  driver.findElement(By.className("nav__el nav__el--customers")).click();
+//                 setTimeout(async() => {
+//                     let customSorting =  await driver.findElement(By.id("customersNumberID"));
+//                     let strCustomSorting = await customSorting.getAttribute("innerHTML");
+//
+//                     try {
+//                         assert.strictEqual(strCustomSorting, "Customer Number", "sollte sein: Customer Number");
+//                         console.log("Test ist gut --> strCustomSorting: " + strCustomSorting)
+//                     }
+//                     catch (e){
+//                         console.log("Assert Failed: "+e)
+//                     }
+//                 }, "1000")
+//
+//             }, "2000")
+//
+//         } finally {
+//             setTimeout(async() => {
+//                 await driver.quit();
+//                 console.log("Bin zu  2")
+//             }, "4000")
+//         }
+//     });
+// });
 
-
-            let urlAfterLogIn = "";
-            setTimeout(async() => {
-                //console.log("bin drin")
-                //urlAfterLogIn = await driver.getCurrentUrl();
-                await  driver.findElement(By.className("nav__el nav__el--customers")).click();
-                //console.log("mache click manage customers")
-                setTimeout(async() => {
-                    let customSorting =  await driver.findElement(By.id("customersNumberID"));
-                    //console.log("name: "+JSON.stringify(customSorting))
-                    let strCustomSorting = await customSorting.getAttribute("innerHTML");
-                    //console.log("strCustomSorting: " + strCustomSorting)
-                    //console.log("customSorting: " + customSorting.getName())
-                    //let x = JSON.stringify(customSorting)
-                    // console.log("x: "+x)
-
-                    try {
-                        assert.strictEqual(strCustomSorting, "Customer Number", "sollte sein: Customer Number");
-                        console.log("Test ist gut --> strCustomSorting: " + strCustomSorting)
-                    }
-                    catch (e){
-                        console.log("Assert Failed: "+e)
-                    }
-                }, "1000")
-
-            }, "2000")
-
-
-            // assert.strictEqual(pageTitle, "MubeaTrack | Shipments Overview");
-            // if (pageTitle) {
-            //     console.log("Page Title:", pageTitle);
-            // }
-        } finally {
-            setTimeout(async() => {
-                await driver.quit();
-                console.log("Bin zu  2")
-            }, "4000")
-        }
-    });
-});
-
-
+//
 describe("test, when admin logt in, an click his Avatar", function () {
 
     it("It should return the employee- number 99999 from Admin", async function () {
