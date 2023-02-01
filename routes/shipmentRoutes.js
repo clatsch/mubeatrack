@@ -1,29 +1,28 @@
-const express = require('express');
-const shipmentController = require('../controllers/shipmentController');
-const authController = require('../controllers/authController');
+import express from 'express';
+import shipmentController from '../controllers/shipmentController.js';
+import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
 
-// router
-//   .route('/top-5-shipments')
-//   .get(shipmentController.aliasTopShipments, shipmentController.getAllShipments);
-
-// This will protect all the routes that come after this point
 router.use(authController.protect);
 
-router.route('/shipment-stats')
-  .get(shipmentController.getShipmentStats);
+router
+    .route('/shipment-stats')
+    .get(shipmentController.getShipmentStats);
 
-router.route('/monthly-plan/:year')
-  .get(shipmentController.getMonthlyPlan);
+router
+    .route('/monthly-plan/:year')
+    .get(shipmentController.getMonthlyPlan);
 
-router.route('/')
-  .get(shipmentController.getAllShipments)
-  .post(authController.restrictsTo('admin', 'user'), shipmentController.createShipment);
+router
+    .route('/')
+    .get(shipmentController.getAllShipments)
+    .post(authController.restrictsTo('admin', 'user'), shipmentController.createShipment);
 
-router.route('/:id')
-  .get(shipmentController.getShipment)
-  .patch(authController.restrictsTo('admin', 'user'), shipmentController.updateShipment)
-  .delete(authController.restrictsTo('admin', 'user'), shipmentController.deleteShipment);
+router
+    .route('/:id')
+    .get(shipmentController.getShipment)
+    .patch(authController.restrictsTo('admin', 'user'), shipmentController.updateShipment)
+    .delete(authController.restrictsTo('admin', 'user'), shipmentController.deleteShipment);
 
-module.exports = router;
+export default router;

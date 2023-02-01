@@ -2,6 +2,7 @@
   "name": "MubeaTrack",
   "version": "1.0.0",
   "description": "Shipment tracking for Mubea",
+  "type": "module",
   "main": "app.js",
   "scripts": {
     "test_CI": "mocha ./tests/testMocha.js mocha --timeout 10000 --exit",

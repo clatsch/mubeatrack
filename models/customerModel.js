@@ -1,59 +1,39 @@
-const mongoose = require('mongoose');
-//const validator = require('validator');
+import mongoose from 'mongoose';
 
 const customerSchema = new mongoose.Schema({
     companyName: {
-      type: String,
+        type: String,
     },
     customerNumber: {
-      type: Number,
+        type: Number,
     },
     zip: {
-      type: Number,
+        type: Number,
     },
     city: {
-      type: String,
+        type: String,
     },
     country: {
-      type: String,
+        type: String,
     },
     email: {
-      type: String,
+        type: String,
     },
     phone: {
-      type: String,
+        type: String,
     },
     website: {
-      type: String,
+        type: String,
     },
     address: {
-      type: String,
+        type: String,
     },
-    // location: {
-    //   // GeoJSON
-    //   type: {
-    //     type: String,
-    //     default: 'Point',
-    //     enum: ['Point'],
-    //   },
-    //   coordinates: [Number],
-    // },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    //required: [true, 'Customer must belong to a user'],
-  },
-// });
-//
-// customerSchema.pre(/^find/, function(next) {
-//   this.populate({
-//     path: 'user',
-//     select: 'name employeeNumber',
-//   })
-//   next();
-  },
-);
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+    },
+});
 
 const Customer = mongoose.model('Customer', customerSchema);
 
-module.exports = Customer;
+export default Customer;

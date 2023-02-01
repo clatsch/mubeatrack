@@ -1,8 +1,8 @@
-const Customer = require('../models/customerModel')
-const factory = require('./handlerFactory');
+import Customer from '../models/customerModel.js';
+import * as factory from './handlerFactory.js';
 
-exports.getAllCustomers = factory.getAll(Customer);
-exports.getCustomer = factory.getOne(Customer, { path: 'user'} );
-exports.createCustomer = factory.createOne(Customer);
-exports.updateCustomer = factory.updateOne(Customer);
-exports.deleteCustomer = factory.deleteOne(Customer);
+export const getAllCustomers = factory.getAll(Customer);
+export const getCustomer = factory.getOne(Customer, { path: 'user' });
+export const createCustomer = factory.createOne(Customer);
+export const updateCustomer = factory.updateOne(Customer);
+export const deleteCustomer = factory.deleteOne(Customer);

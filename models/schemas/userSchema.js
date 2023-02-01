@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+import mongoose from 'mongoose';
+import validator from 'validator';
 
 const userSchema = new mongoose.Schema({
   employeeNumber: {
@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please confirm your password'],
     validate: {
-      // This only works on CREATE and SAVE
+// This only works on CREATE and SAVE
       validator: function(el) {
         return el === this.password;
       },
@@ -58,4 +58,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = userSchema;
+export default userSchema;

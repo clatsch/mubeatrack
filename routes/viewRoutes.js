@@ -1,6 +1,6 @@
-const express = require('express');
-const viewsController = require('../controllers/viewsController')
-const authController = require('../controllers/authController');
+import express from 'express';
+import * as viewsController from '../controllers/viewsController.js';
+import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -19,5 +19,4 @@ router.get('/users', authController.protect, authController.restrictsTo('admin')
 router.get('/user/:id', authController.protect, authController.restrictsTo('admin'), viewsController.getUser)
 router.get('/users/signup', authController.protect, authController.restrictsTo('admin'), viewsController.getSignupForm)
 
-
-module.exports = router;
+export default router;

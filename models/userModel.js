@@ -1,10 +1,9 @@
-const crypto = require('crypto');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const userSchema = require('./schemas/userSchema')
+import crypto from 'crypto';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import userSchema from './schemas/userSchema.js';
 
-
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
 
@@ -16,7 +15,7 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
 
   // could be that token is issued a bit before the timestamp in the DB, hence -1 second
@@ -24,17 +23,17 @@ userSchema.pre('save', function(next) {
   next();
 });
 
-userSchema.pre(/^find/, function(next) {
-// this points to the current query
+userSchema.pre(/^find/, function (next) {
+  // this points to the current query
   this.find({ active: { $ne: false } });
   next();
 });
 
-userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
     return JWTTimestamp < changedTimestamp;
@@ -43,14 +42,14 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   return false;
 };
 
-userSchema.methods.createPasswordResetToken = function() {
+userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32)
-    .toString('hex');
+      .toString('hex');
 
   this.passwordResetToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
@@ -59,4 +58,4 @@ userSchema.methods.createPasswordResetToken = function() {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;
