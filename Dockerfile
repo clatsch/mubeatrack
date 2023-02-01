@@ -18,9 +18,9 @@ ENV MONGODB_URI mongodb+srv://mubeatrack:<PASSWORD>@mubeatrack.f4asqw2.mongodb.n
 
 
 # Expose the port that the app is listening on
-ENV PORT_NUMBER=$PORT_NUMBER
-EXPOSE $PORT_NUMBER
-#EXPOSE 3000
+#ENV PORT_NUMBER=$PORT_NUMBER
+#EXPOSE $PORT_NUMBER
+EXPOSE 3000
 
 # Start the app
 CMD ["npm", "start"]
