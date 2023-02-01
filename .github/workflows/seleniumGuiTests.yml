@@ -49,5 +49,5 @@ jobs:
       - name: Run Mocha Selenium-Testing
         run: |
           npm i
-          npm run selnenium
+          npm run test_selnenium
 
