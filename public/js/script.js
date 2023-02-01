@@ -1,7 +1,6 @@
-
-const process = require("process");
-// const apiUrl = process.env.API_URL;
-const port = process.env.PORT_NUMBER || 3000;
+// const process = require("process");
+const port = 3000
+// const port = process.env.PORT_NUMBER || 3000;
 const apiUrl = 'http://localhost:' + port + '/api/v1';
 // ---- ACCOUNT ----
 const login = async(email, password) => {
