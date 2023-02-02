@@ -1,18 +1,27 @@
-# MubeaTrack
+= MubeaTrack
 
-## Project Setup
-### Server
-```
+== Project Setup
+
+Clone or fork project
+
+
+....
 npm install
-```
+....
 
 
 
-start server with `npm run dev` --> start with nodemon (server start automatically, when do some code- changes)
+
+start server with `npm run dev` -> start with nodemon (server start automatically, when do some code- changes)
 
 or
 
 start server with `node server.mjs`
 
-# selenium_test....
+== Tests
+
+=== Unittests
+
+=== Selenium Tests
+selenium_test....
 #mocha test....
