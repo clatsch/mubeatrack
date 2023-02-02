@@ -16,7 +16,7 @@ describe('deleteOne', () => {
         const res = {
             status: statusCode => {
                 return {
-                    json: (data) => {
+                    json: data => {
                         expect(statusCode).to.equal(204);
                         expect(data).to.deep.equal({
                             status: 'success',
