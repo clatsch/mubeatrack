@@ -1,12 +1,12 @@
 {
-  "name": "MubeaTrack",
-  "version": "1.0.0",
+  "name": "mubeatrack",
+  "version": "0.0.1",
   "description": "Shipment tracking for Mubea",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test_CI": "mocha -- ./tests/test.js -- mocha --timeout 10000 --exit",
     "test_selenium": "mocha ./tests/selenium.js",
-    "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
     "debug": "ndb server.js"
   },
