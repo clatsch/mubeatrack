@@ -80,3 +80,10 @@ To run the Selenium tests, use the following command:
 ....
 $ npm run test_selenium
 ....
+
+== Autors
+https://github.com/JoSchmidtIBW[John Schmidt]
+
+https://github.com/clatsch[Cla Tschenett]
+
+Arbon/Chur 03.02.2023
