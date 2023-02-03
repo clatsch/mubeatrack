@@ -9,13 +9,6 @@ exports.setShipmentUserIds = (req, res, next) => {
   next();
 }
 
-exports.aliasTopShipments = (req, res, next) => {
-  req.query.limit = '5';
-  req.query.sort = '-ratingsAverage,price';
-  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
-  next();
-};
-
 exports.getAllShipments = factory.getAll(Shipment);
 exports.getShipment = factory.getOne(Shipment);
 exports.createShipment = factory.createOne(Shipment);
@@ -24,21 +17,12 @@ exports.deleteShipment = factory.deleteOne(Shipment);
 
 exports.getShipmentStats = catchAsync(async(req, res, next) => {
   const stats = await Shipment.aggregate([
-    // {
-    //   $match: { ratingsAverage: { $gte: 4.0 } },
-    //   $match: { },
-    // },
+
     {
       $group: {
-        // _id: null,
-        _id: { $toUpper: '$difficulty' },
-        //_id: '$difficulty',
-        // _id: '$ratingsAverage',
+        _id: { $toUpper: '$averageOverAll' },
         numShipments: { $sum: 1 },
         averageTons: { $avg: '$amount' },
-        // avgPrice: { $avg: '$price' },
-        // minPrice: { $min: '$price' },
-        // maxPrice: { $max: '$price' },
       },
     },
     {
@@ -55,7 +39,7 @@ exports.getShipmentStats = catchAsync(async(req, res, next) => {
     });
 });
 
-exports.getMonthlyPlan = catchAsync(async(req, res, next) => {
+exports.getWeeklyShipments = catchAsync(async(req, res, next) => {
   const year = req.params.year * 1;
 
   const plan = await Shipment.aggregate([

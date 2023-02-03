@@ -15,7 +15,7 @@ router.route('/shipment-stats')
   .get(shipmentController.getShipmentStats);
 
 router.route('/monthly-plan/:year')
-  .get(shipmentController.getMonthlyPlan);
+  .get(shipmentController.getWeeklyShipments);
 
 router.route('/')
   .get(shipmentController.getAllShipments)

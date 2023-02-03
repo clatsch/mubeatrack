@@ -55,22 +55,7 @@ shipmentSchema.pre(/^find/, function(next) {
   next();
 })
 
-shipmentSchema.virtual('durationWeeks').get(function() {
-  return this.duration / 7;
-});
 
-/*
-// DOCUMENT MIDDLEWARE: runs before .save() and .create()
-shipmentSchema.pre('save', function(next) {
-  this.slug = slugify(this.name, { lower: true });
-  next();
-});
- */
-
-// QUERY MIDDLEWARE
-// Regular expression /^find/ instead of 'find'
-// because like this, it finds everything that starts with find,
-// hence also findOne which is findById in the background
 shipmentSchema.pre(/^find/, function(next) {
   this.find({ secretShipment: { $ne: true } });
 
