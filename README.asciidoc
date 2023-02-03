@@ -20,7 +20,7 @@ To get started with the project, follow these steps:
 Clone or fork the project repository to your local machine.
 
 ....
-$ git clone https://github.com/clatsch/mubeatrack_mongodb
+$ git clone https://github.com/clatsch/mubeatrack
 ....
 
 Navigate to the project directory and install the required dependencies by running the following command:
