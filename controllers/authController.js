@@ -136,7 +136,9 @@ exports.isLoggedIn = async(req, res, next) => {
 
       // THERE IS A LOGGED IN USER
       res.locals.user = currentUser;
-      return next();
+
+      // Redirect to "/shipments" if user is logged in
+      return res.redirect('/shipments');
     } catch (err) {
       return next();
     }
