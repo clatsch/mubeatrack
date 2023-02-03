@@ -34,7 +34,6 @@ const customerSchema = new mongoose.Schema({
         user: {
             type: mongoose.Schema.ObjectId,
             ref: 'User',
-            required: [true, 'Customer must belong to a user'],
         },
     },
 );
