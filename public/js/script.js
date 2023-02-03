@@ -116,7 +116,7 @@ const logout = async() => {
 // Type is either 'password' or 'data
 const updateSettings = async(data, type) => {
   try {
-    const url = type === 'password' ? '0.0.0.0:3000/api/v1/users/updateMyPassword' : '0.0.0.0:3000/api/v1/users/updateMe';
+    const url = type === 'password' ? `${apiUrl}${apiUrl}/users/updateMyPassword` : `${apiUrl}/users/updateMe`;
 
     const res = await axios({
       method: 'PATCH',
