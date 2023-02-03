@@ -1,27 +1,82 @@
 = MubeaTrack
+MubeaTrack is a client/server web application that provides a RESTful API and a secure web app with authentication. The main technologies used in the implementation of MubeaTrack are Node.js, Express, MongoDB, EJS, and security middlewares like Helmet and XSS protection.
+
+MubeaTrack is a web application designed to solve the problem of keeping track of deliveries to external customers of Mubea.
+The application replaces an Excel document that only stores data for the current and upcoming week and can be prone to data loss due to simultaneous editing.
+MubeaTrack features a client and a Node.js server, and allows each employee to log in and record their deliveries, which are then stored in a database.
+This solution provides an easy way to trace deliveries and eliminates the need for Excel sheet.
+Multiple users can input and retrieve data simultaneously, the data is displayed in a clear and modern way, and the delivery tracking is secure and easily accessible to the management.
+
+The application has been developed with the goal of being functional, secure, and maintainable.
+It has been built using best practices and modern technologies, making it possible to quickly adapt the application to new requirements and improve it.
+
+MubeaTrack provides a robust and scalable technical implementation that can be used in various environments.
+The RESTful API has been structured in a way that it can be easily expanded to allow other applications to access and integrate the data of the application.
 
 == Project Setup
 
-Clone or fork project
+To get started with the project, follow these steps:
 
+Clone or fork the project repository to your local machine.
 
 ....
-npm install
+$ git clone https://github.com/clatsch/mubeatrack_mongodb
 ....
 
+Navigate to the project directory and install the required dependencies by running the following command:
 
+....
+$ npm install
+....
 
+Before the server can be started, you need to create a `config.env` file in the project root folder with the following values:
 
-start server with `npm run dev` -> start with nodemon (server start automatically, when do some code- changes)
+....
+NODE_ENV=development
+PORT=3000
+DATABASE=mongodb+srv://<username>:<password><host>/<collection>retryWrites=true&w=majority
+API_URL=http://localhost:3000/api/v1
 
-or
+JWT_SECRET=*****************
+JWT_EXPIRES_IN=90d
+JWT_COOKIE_EXPIRES_IN=90
 
-start server with `node server.mjs`
+EMAIL_USERNAME=*****************
+EMAIL_PASSWORD=*****************
+EMAIL_HOST=smtp.mailtrap.io
+EMAIL_PORT=25
+....
+
+To start the application, you have two options:
+Start the server with `npm run dev` to run with nodemon.
+This will automatically restart the server whenever you make code changes.
+
+....
+$ npm run dev
+....
+
+Start the server with node server.mjs to run the server without nodemon.
+
+....
+$ node server.mjs
+....
 
 == Tests
 
+The project includes both unit tests and Selenium tests to ensure its functionality and reliability.
+
 === Unittests
 
+To run the unit tests, use the following command:
+
+....
+$ npm run test_CI
+....
+
 === Selenium Tests
-selenium_test....
-#mocha test....
+
+To run the Selenium tests, use the following command:
+
+....
+$ npm run test_selenium
+....
